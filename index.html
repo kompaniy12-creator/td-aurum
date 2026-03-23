@@ -15,7 +15,7 @@
   --green:#66bb6a;--green-dim:#2e7d32;--income:#66bb6a;--expense:#e53935}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
-  min-height:100vh;overflow-x:hidden;padding-bottom:80px}
+  min-height:100vh;overflow-x:hidden;padding-bottom:72px}
 
 /* HUD Background */
 .hud-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
@@ -42,6 +42,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 
 /* Content */
 .content{position:relative;z-index:1;max-width:500px;margin:0 auto;padding:0 12px}
+
+/* Tab Content */
+.tab-content{display:none}
+.tab-content.active{display:block}
 
 /* Period Tabs */
 .period-tabs{display:flex;gap:4px;justify-content:center;margin:12px 0;flex-wrap:wrap}
@@ -94,7 +98,8 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 /* Recent Transactions */
 .tx-card{background:linear-gradient(135deg,rgba(17,16,8,0.9),rgba(10,8,5,0.95));
   border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;
-  display:flex;align-items:center;gap:10px}
+  display:flex;align-items:center;gap:10px;cursor:pointer;transition:all .2s}
+.tx-card:hover{border-color:rgba(102,187,106,0.3);background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98))}
 .tx-emoji{font-size:18px;min-width:26px;text-align:center}
 .tx-info{flex:1;min-width:0}
 .tx-desc{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -141,8 +146,117 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 .btn-delete{background:linear-gradient(135deg,rgba(229,57,53,0.2),rgba(229,57,53,0.1));color:var(--red);border:1px solid rgba(229,57,53,0.3) !important}
 .btn-delete:hover{box-shadow:0 0 15px rgba(229,57,53,0.2)}
 .btn-cancel{background:rgba(255,255,255,0.05);color:var(--muted);border:1px solid rgba(255,255,255,0.1) !important}
-.tx-card{cursor:pointer;transition:all .2s}
-.tx-card:hover{border-color:rgba(102,187,106,0.3);background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98))}
+
+/* ═══ BALANCE CHART (SVG) ═══ */
+.chart-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:16px;padding:16px;margin:12px 0;position:relative;overflow:hidden}
+.chart-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(102,187,106,0.2),transparent)}
+.chart-card svg{display:block;width:100%;height:120px}
+.chart-card .chart-title{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--gold-dim);letter-spacing:2px;margin-bottom:10px}
+
+/* ═══ TOP EXPENSES BARS ═══ */
+.top-exp-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:14px;margin:12px 0}
+.top-exp-row{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.top-exp-row:last-child{margin-bottom:0}
+.top-exp-label{font-size:12px;min-width:90px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.top-exp-bar-bg{flex:1;height:10px;background:rgba(255,255,255,0.04);border-radius:5px;overflow:hidden}
+.top-exp-bar{height:100%;border-radius:5px;transition:width .6s ease}
+.top-exp-val{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--red);min-width:70px;text-align:right}
+
+/* ═══ FAB ═══ */
+.fab{position:fixed;bottom:84px;right:20px;z-index:100;width:56px;height:56px;border-radius:50%;border:none;
+  background:linear-gradient(135deg,var(--green),var(--green-dim));color:#fff;font-size:28px;cursor:pointer;
+  box-shadow:0 0 20px rgba(102,187,106,0.4),0 4px 12px rgba(0,0,0,0.5);transition:all .2s;
+  display:flex;align-items:center;justify-content:center}
+.fab:hover{transform:scale(1.1);box-shadow:0 0 30px rgba(102,187,106,0.6),0 6px 16px rgba(0,0,0,0.6)}
+.fab:active{transform:scale(0.95)}
+
+/* ═══ BOTTOM NAV ═══ */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:100;
+  background:linear-gradient(180deg,rgba(10,8,5,0.95),rgba(5,5,7,0.99));
+  border-top:1px solid rgba(102,187,106,0.1);
+  display:flex;height:64px;backdrop-filter:blur(10px)}
+.bottom-nav::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(90deg,transparent,rgba(102,187,106,0.3),transparent)}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;
+  cursor:pointer;color:var(--muted);transition:all .2s;position:relative;border:none;background:none;
+  font-family:'Inter',sans-serif;-webkit-tap-highlight-color:transparent}
+.nav-item .nav-icon{font-size:20px;transition:transform .2s}
+.nav-item .nav-label{font-family:'Orbitron',sans-serif;font-size:7px;letter-spacing:1px;text-transform:uppercase}
+.nav-item.active{color:var(--green)}
+.nav-item.active .nav-icon{transform:scale(1.15)}
+.nav-item.active::after{content:'';position:absolute;top:-1px;left:20%;right:20%;height:2px;
+  background:var(--green);border-radius:0 0 2px 2px;box-shadow:0 0 8px rgba(102,187,106,0.4)}
+
+/* ═══ PLANNING TAB ═══ */
+.budget-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:14px;margin-bottom:8px}
+.budget-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.budget-name{font-size:13px;font-weight:600}
+.budget-amounts{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--muted)}
+.budget-amounts span{color:var(--text)}
+.budget-bar{width:100%;height:8px;background:rgba(255,255,255,0.05);border-radius:4px;overflow:hidden;margin-top:6px}
+.budget-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.budget-bar-fill.ok{background:linear-gradient(90deg,var(--green),var(--green-dim))}
+.budget-bar-fill.warn{background:linear-gradient(90deg,var(--gold),#ff9800)}
+.budget-bar-fill.over{background:linear-gradient(90deg,var(--red),#c62828)}
+.placeholder-card{background:linear-gradient(135deg,rgba(17,16,8,0.9),rgba(10,8,5,0.95));
+  border:1px dashed rgba(102,187,106,0.12);border-radius:12px;padding:30px;text-align:center;margin:12px 0}
+.placeholder-card .ph-icon{font-size:36px;margin-bottom:8px}
+.placeholder-card p{color:var(--muted);font-size:12px;font-family:'Orbitron',sans-serif;letter-spacing:1px}
+
+/* ═══ STATS TAB ═══ */
+.stats-period-nav{display:flex;align-items:center;justify-content:center;gap:16px;margin:16px 0}
+.stats-period-nav button{background:none;border:1px solid rgba(102,187,106,0.2);color:var(--green);
+  width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:14px;transition:all .2s;
+  display:flex;align-items:center;justify-content:center}
+.stats-period-nav button:hover{background:rgba(102,187,106,0.1);border-color:rgba(102,187,106,0.4)}
+.stats-period-label{font-family:'Orbitron',sans-serif;font-size:11px;color:var(--text);letter-spacing:1px;min-width:120px;text-align:center}
+
+.stat-balance-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid rgba(102,187,106,0.1);border-radius:16px;padding:20px;margin:12px 0;text-align:center;
+  position:relative;overflow:hidden}
+.stat-balance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent)}
+
+.donut-container{position:relative;width:180px;height:180px;margin:16px auto}
+.donut{width:180px;height:180px;border-radius:50%;position:relative}
+.donut-hole{position:absolute;top:30px;left:30px;width:120px;height:120px;border-radius:50%;
+  background:var(--bg);display:flex;align-items:center;justify-content:center;flex-direction:column}
+.donut-hole .donut-total{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--red)}
+.donut-hole .donut-label{font-family:'Orbitron',sans-serif;font-size:7px;color:var(--muted);letter-spacing:1px;margin-top:2px}
+.donut-legend{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:12px}
+.donut-legend-item{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--muted)}
+.donut-legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+
+.cashflow-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:16px;margin:12px 0}
+.cashflow-bars{display:flex;align-items:flex-end;gap:12px;height:100px;margin-top:12px}
+.cashflow-bar-group{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px}
+.cashflow-bar-wrap{width:100%;height:80px;display:flex;align-items:flex-end;justify-content:center;gap:4px}
+.cashflow-bar{width:45%;border-radius:4px 4px 0 0;transition:height .5s ease;min-height:2px}
+.cashflow-bar.inc{background:linear-gradient(180deg,var(--green),var(--green-dim))}
+.cashflow-bar.exp{background:linear-gradient(180deg,var(--red),#c62828)}
+.cashflow-label{font-family:'Orbitron',sans-serif;font-size:7px;color:var(--muted);letter-spacing:0.5px}
+
+.report-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:16px;margin:12px 0;
+  display:flex;align-items:center;justify-content:space-between}
+.report-info .report-label{font-family:'Orbitron',sans-serif;font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:4px}
+.report-info .report-value{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:700}
+.report-badge{font-family:'Orbitron',sans-serif;font-size:10px;padding:4px 10px;border-radius:12px;font-weight:700}
+.report-badge.up{background:rgba(102,187,106,0.15);color:var(--green);border:1px solid rgba(102,187,106,0.3)}
+.report-badge.down{background:rgba(229,57,53,0.15);color:var(--red);border:1px solid rgba(229,57,53,0.3)}
+
+/* ═══ SETTINGS TAB ═══ */
+.settings-item{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px}
+.settings-icon{font-size:22px;min-width:30px;text-align:center}
+.settings-label{font-size:13px;font-weight:500;flex:1}
+.settings-arrow{color:var(--muted);font-size:14px}
 
 /* Footer */
 .footer{text-align:center;padding:20px;font-size:10px;color:var(--muted)}
@@ -161,22 +275,83 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 </div>
 
 <div class="content">
-  <div class="period-tabs">
-    <button class="period-tab active" data-days="7">7 дней</button>
-    <button class="period-tab" data-days="30">Месяц</button>
-    <button class="period-tab" data-days="90">3 месяца</button>
-    <button class="period-tab" data-days="365">Год</button>
+  <!-- ═══ TAB: ОБЗОР ═══ -->
+  <div id="tab-overview" class="tab-content active">
+    <div class="period-tabs">
+      <button class="period-tab active" data-days="7">7 дней</button>
+      <button class="period-tab" data-days="30">Месяц</button>
+      <button class="period-tab" data-days="90">3 месяца</button>
+      <button class="period-tab" data-days="365">Год</button>
+    </div>
+    <div id="dashboard">
+      <div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА ДАННЫХ...</p></div>
+    </div>
   </div>
 
-  <div id="dashboard">
-    <div class="loading">
-      <div class="spinner"></div>
-      <p>ЗАГРУЗКА ДАННЫХ...</p>
+  <!-- ═══ TAB: ПЛАНИРОВАНИЕ ═══ -->
+  <div id="tab-planning" class="tab-content">
+    <div class="cat-section">
+      <div class="section-title">📅 БЮДЖЕТЫ <div class="line"></div></div>
+      <div id="budgets-list">
+        <div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА БЮДЖЕТОВ...</p></div>
+      </div>
     </div>
+    <div class="cat-section">
+      <div class="section-title">🔔 ЗАПЛАНИРОВАННЫЕ ПЛАТЕЖИ <div class="line"></div></div>
+      <div class="placeholder-card">
+        <div class="ph-icon">🚀</div>
+        <p>СКОРО</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: СТАТИСТИКА ═══ -->
+  <div id="tab-stats" class="tab-content">
+    <div class="stats-period-nav">
+      <button onclick="shiftStatsPeriod(-1)">◀</button>
+      <div class="stats-period-label" id="stats-period-label">Этот месяц</div>
+      <button onclick="shiftStatsPeriod(1)">▶</button>
+    </div>
+    <div id="stats-content">
+      <div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА СТАТИСТИКИ...</p></div>
+    </div>
+  </div>
+
+  <!-- ═══ TAB: ЕЩЁ ═══ -->
+  <div id="tab-more" class="tab-content">
+    <div class="cat-section">
+      <div class="section-title">⚙️ НАСТРОЙКИ <div class="line"></div></div>
+      <div class="settings-item"><div class="settings-icon">💱</div><div class="settings-label">Валюта по умолчанию</div><div class="settings-arrow">PLN ›</div></div>
+      <div class="settings-item"><div class="settings-icon">📊</div><div class="settings-label">Категории</div><div class="settings-arrow">›</div></div>
+      <div class="settings-item"><div class="settings-icon">🔔</div><div class="settings-label">Уведомления</div><div class="settings-arrow">›</div></div>
+      <div class="settings-item"><div class="settings-icon">📤</div><div class="settings-label">Экспорт данных</div><div class="settings-arrow">›</div></div>
+      <div class="settings-item"><div class="settings-icon">🎨</div><div class="settings-label">Тема оформления</div><div class="settings-arrow">HUD ›</div></div>
+      <div class="settings-item"><div class="settings-icon">ℹ️</div><div class="settings-label">О приложении</div><div class="settings-arrow">v1.0 ›</div></div>
+    </div>
+    <div class="footer">Powered by <a href="#">A.U.R.U.M.</a> ⚡ Stark Industries Style</div>
   </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- FAB -->
+<button class="fab" id="fabBtn" onclick="openAddModal()">+</button>
+
+<!-- ═══ BOTTOM NAV ═══ -->
+<nav class="bottom-nav">
+  <button class="nav-item active" data-tab="tab-overview">
+    <span class="nav-icon">📊</span><span class="nav-label">Обзор</span>
+  </button>
+  <button class="nav-item" data-tab="tab-planning">
+    <span class="nav-icon">📅</span><span class="nav-label">План</span>
+  </button>
+  <button class="nav-item" data-tab="tab-stats">
+    <span class="nav-icon">📈</span><span class="nav-label">Статистика</span>
+  </button>
+  <button class="nav-item" data-tab="tab-more">
+    <span class="nav-icon">⚙️</span><span class="nav-label">Ещё</span>
+  </button>
+</nav>
+
+<!-- ═══ EDIT MODAL ═══ -->
 <div class="modal-overlay" id="editModal">
   <div class="modal">
     <h2>✏️ РЕДАКТИРОВАТЬ</h2>
@@ -189,33 +364,22 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
     </div>
     <div class="field"><label>Категория</label>
       <select id="edit-category">
-        <option value="🛒 Продукты">🛒 Продукты</option>
-        <option value="🍽 Рестораны">🍽 Рестораны</option>
-        <option value="🚗 Транспорт">🚗 Транспорт</option>
-        <option value="🏠 Жильё">🏠 Жильё</option>
-        <option value="💊 Здоровье">💊 Здоровье</option>
-        <option value="👔 Одежда">👔 Одежда</option>
-        <option value="🎮 Развлечения">🎮 Развлечения</option>
-        <option value="📱 Связь">📱 Связь</option>
-        <option value="💼 Бизнес">💼 Бизнес</option>
-        <option value="📦 Покупки">📦 Покупки</option>
-        <option value="✈️ Путешествия">✈️ Путешествия</option>
-        <option value="📚 Образование">📚 Образование</option>
-        <option value="🎁 Подарки">🎁 Подарки</option>
-        <option value="🏦 Финансы">🏦 Финансы</option>
-        <option value="💰 Доход">💰 Доход</option>
-        <option value="🍕 Еда и напитки">🍕 Еда и напитки</option>
+        <option value="🛒 Продукты">🛒 Продукты</option><option value="🍽 Рестораны">🍽 Рестораны</option>
+        <option value="🚗 Транспорт">🚗 Транспорт</option><option value="🏠 Жильё">🏠 Жильё</option>
+        <option value="💊 Здоровье">💊 Здоровье</option><option value="👔 Одежда">👔 Одежда</option>
+        <option value="🎮 Развлечения">🎮 Развлечения</option><option value="📱 Связь">📱 Связь</option>
+        <option value="💼 Бизнес">💼 Бизнес</option><option value="📦 Покупки">📦 Покупки</option>
+        <option value="✈️ Путешествия">✈️ Путешествия</option><option value="📚 Образование">📚 Образование</option>
+        <option value="🎁 Подарки">🎁 Подарки</option><option value="🏦 Финансы">🏦 Финансы</option>
+        <option value="💰 Доход">💰 Доход</option><option value="🍕 Еда и напитки">🍕 Еда и напитки</option>
         <option value="❓ Другое">❓ Другое</option>
       </select>
     </div>
     <div class="field"><label>Магазин</label><input id="edit-shop" type="text"></div>
     <div class="field"><label>Способ оплаты</label>
       <select id="edit-payment">
-        <option value="">— не указан —</option>
-        <option value="Наличные">Наличные</option>
-        <option value="Карта">Карта</option>
-        <option value="BLIK">BLIK</option>
-        <option value="Перевод">Перевод</option>
+        <option value="">— не указан —</option><option value="Наличные">Наличные</option>
+        <option value="Карта">Карта</option><option value="BLIK">BLIK</option><option value="Перевод">Перевод</option>
       </select>
     </div>
     <div class="field"><label>Валюта</label>
@@ -226,27 +390,84 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
     </div>
     <div class="modal-actions">
       <button class="btn-save" onclick="saveTx()">💾 Сохранить</button>
-      <button class="btn-cancel" onclick="closeModal()">✖ Отмена</button>
+      <button class="btn-cancel" onclick="closeModal('editModal')">✖ Отмена</button>
       <button class="btn-delete" onclick="deleteTx()">🗑 Удалить</button>
     </div>
   </div>
 </div>
 
-<div class="footer">
-  Powered by <a href="#">A.U.R.U.M.</a> ⚡ Stark Industries Style
+<!-- ═══ ADD MODAL ═══ -->
+<div class="modal-overlay" id="addModal">
+  <div class="modal">
+    <h2>➕ НОВАЯ ТРАНЗАКЦИЯ</h2>
+    <div class="field"><label>Описание</label><input id="add-desc" type="text" placeholder="Что купили?"></div>
+    <div class="field"><label>Сумма</label><input id="add-amount" type="number" step="0.01" placeholder="0.00"></div>
+    <div class="field"><label>Дата</label><input id="add-date" type="date"></div>
+    <div class="field"><label>Тип</label>
+      <select id="add-type"><option value="Расход">📉 Расход</option><option value="Доход">📈 Доход</option></select>
+    </div>
+    <div class="field"><label>Категория</label>
+      <select id="add-category">
+        <option value="🛒 Продукты">🛒 Продукты</option><option value="🍽 Рестораны">🍽 Рестораны</option>
+        <option value="🚗 Транспорт">🚗 Транспорт</option><option value="🏠 Жильё">🏠 Жильё</option>
+        <option value="💊 Здоровье">💊 Здоровье</option><option value="👔 Одежда">👔 Одежда</option>
+        <option value="🎮 Развлечения">🎮 Развлечения</option><option value="📱 Связь">📱 Связь</option>
+        <option value="💼 Бизнес">💼 Бизнес</option><option value="📦 Покупки">📦 Покупки</option>
+        <option value="✈️ Путешествия">✈️ Путешествия</option><option value="📚 Образование">📚 Образование</option>
+        <option value="🎁 Подарки">🎁 Подарки</option><option value="🏦 Финансы">🏦 Финансы</option>
+        <option value="💰 Доход">💰 Доход</option><option value="🍕 Еда и напитки">🍕 Еда и напитки</option>
+        <option value="❓ Другое">❓ Другое</option>
+      </select>
+    </div>
+    <div class="field"><label>Магазин</label><input id="add-shop" type="text" placeholder="Название магазина"></div>
+    <div class="field"><label>Способ оплаты</label>
+      <select id="add-payment">
+        <option value="">— не указан —</option><option value="Наличные">Наличные</option>
+        <option value="Карта">Карта</option><option value="BLIK">BLIK</option><option value="Перевод">Перевод</option>
+      </select>
+    </div>
+    <div class="field"><label>Валюта</label>
+      <select id="add-currency">
+        <option value="PLN">PLN</option><option value="EUR">EUR</option>
+        <option value="USD">USD</option><option value="UAH">UAH</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="createTx()">💾 Добавить</button>
+      <button class="btn-cancel" onclick="closeModal('addModal')">✖ Отмена</button>
+    </div>
+  </div>
 </div>
 
 <script>
 let tg;
 try { tg = window.Telegram && Telegram.WebApp; if(tg) tg.ready(); } catch(e) {}
 
-// API hosted on server, dashboard on Netlify
 const API_BASE = window.location.hostname === 'localhost' || window.location.port
   ? window.location.origin
   : 'https://snow-knights-white-soul.trycloudflare.com';
 let currentDays = 7;
+let cachedData = null; // cached dashboard data for charts/stats
+let statsMonthOffset = 0; // 0 = current month, -1 = prev, etc.
 
-// Period tabs
+// ═══════════════════════════════════════
+//  BOTTOM NAV
+// ═══════════════════════════════════════
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.tab).classList.add('active');
+    // Load tab data
+    if (btn.dataset.tab === 'tab-planning') loadBudgets();
+    if (btn.dataset.tab === 'tab-stats') loadStats();
+  });
+});
+
+// ═══════════════════════════════════════
+//  PERIOD TABS
+// ═══════════════════════════════════════
 document.querySelectorAll('.period-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
@@ -256,6 +477,9 @@ document.querySelectorAll('.period-tab').forEach(tab => {
   });
 });
 
+// ═══════════════════════════════════════
+//  UTILITIES
+// ═══════════════════════════════════════
 function fmt(n) {
   return new Intl.NumberFormat('pl-PL', {minimumFractionDigits:2, maximumFractionDigits:2}).format(n);
 }
@@ -264,7 +488,7 @@ function catEmoji(cat) {
   const map = {'🛒 Продукты':'🛒','🍽 Рестораны':'🍽','🚗 Транспорт':'🚗','🏠 Жильё':'🏠',
     '💊 Здоровье':'💊','👔 Одежда':'👔','🎮 Развлечения':'🎮','📱 Связь':'📱','💼 Бизнес':'💼',
     '📦 Покупки':'📦','✈️ Путешествия':'✈️','📚 Образование':'📚','🎁 Подарки':'🎁',
-    '🏦 Финансы':'🏦','💰 Доход':'💰','❓ Другое':'❓'};
+    '🏦 Финансы':'🏦','💰 Доход':'💰','❓ Другое':'❓','🍕 Еда и напитки':'🍕'};
   for(const [k,v] of Object.entries(map)) if(cat.includes(v) || cat===k) return v;
   return '📊';
 }
@@ -274,19 +498,30 @@ function catColor(i) {
   return colors[i % colors.length];
 }
 
+function todayStr() {
+  const d = new Date(); const mm = String(d.getMonth()+1).padStart(2,'0'); const dd = String(d.getDate()).padStart(2,'0');
+  return `${d.getFullYear()}-${mm}-${dd}`;
+}
+
+// ═══════════════════════════════════════
+//  DASHBOARD LOAD
+// ═══════════════════════════════════════
 async function loadDashboard(days) {
   const el = document.getElementById('dashboard');
   el.innerHTML = '<div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА ДАННЫХ...</p></div>';
-
   try {
     const resp = await fetch(`${API_BASE}/api/dashboard?days=${days}`);
     const data = await resp.json();
+    cachedData = data;
     renderDashboard(data);
   } catch(e) {
     el.innerHTML = `<div class="empty"><div class="icon">⚠️</div><p>Ошибка загрузки: ${e.message}</p></div>`;
   }
 }
 
+// ═══════════════════════════════════════
+//  RENDER DASHBOARD (OVERVIEW)
+// ═══════════════════════════════════════
 function renderDashboard(data) {
   const el = document.getElementById('dashboard');
   if(!data.transactions || data.transactions.length === 0) {
@@ -303,7 +538,6 @@ function renderDashboard(data) {
       <div class="balance-label">БАЛАНС ЗА ПЕРИОД</div>
       <div class="balance-amount ${balClass}">${balSign}${fmt(balance)} ${data.currency}</div>
     </div>
-
     <div class="flow-row">
       <div class="flow-box income">
         <div class="flow-icon">📈</div>
@@ -319,63 +553,141 @@ function renderDashboard(data) {
       </div>
     </div>`;
 
-  // Categories (expenses)
+  // ── Balance Dynamics Chart ──
+  html += renderBalanceChart(data.transactions);
+
+  // ── Top 3 Expense Categories ──
+  if (data.categories && data.categories.length > 0) {
+    const top3 = data.categories.slice(0, 3);
+    const topMax = top3[0].amount;
+    html += `<div class="cat-section"><div class="section-title">🔥 НАИБОЛЬШИЕ РАСХОДЫ <div class="line"></div></div>
+      <div class="top-exp-card">`;
+    top3.forEach((c, i) => {
+      const pct = topMax > 0 ? (c.amount / topMax * 100) : 0;
+      html += `<div class="top-exp-row">
+        <div class="top-exp-label">${catEmoji(c.name)} ${c.name.replace(/^.\s*/,'')}</div>
+        <div class="top-exp-bar-bg"><div class="top-exp-bar" style="width:${pct}%;background:${catColor(i)}"></div></div>
+        <div class="top-exp-val">-${fmt(c.amount)}</div>
+      </div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // ── Categories (full) ──
   if(data.categories && data.categories.length > 0) {
     const maxCat = data.categories[0].amount;
-    html += `<div class="cat-section">
-      <div class="section-title">📊 РАСХОДЫ ПО КАТЕГОРИЯМ <div class="line"></div></div>`;
+    html += `<div class="cat-section"><div class="section-title">📊 РАСХОДЫ ПО КАТЕГОРИЯМ <div class="line"></div></div>`;
     data.categories.forEach((cat, i) => {
       const pct = maxCat > 0 ? (cat.amount / maxCat * 100) : 0;
       const color = catColor(i);
-      html += `
-        <div class="cat-card">
-          <div class="cat-emoji">${catEmoji(cat.name)}</div>
-          <div class="cat-info">
-            <div class="cat-name">${cat.name}</div>
-            <div class="cat-count">${cat.count} транз. · ${cat.percent}%</div>
-            <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:${color}"></div></div>
-          </div>
-          <div class="cat-amount">-${fmt(cat.amount)}</div>
-        </div>`;
+      html += `<div class="cat-card">
+        <div class="cat-emoji">${catEmoji(cat.name)}</div>
+        <div class="cat-info">
+          <div class="cat-name">${cat.name}</div>
+          <div class="cat-count">${cat.count} транз. · ${cat.percent}%</div>
+          <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+        </div>
+        <div class="cat-amount">-${fmt(cat.amount)}</div>
+      </div>`;
     });
     html += '</div>';
   }
 
-  // Payment methods
+  // ── Payment methods ──
   if(data.payment_methods && data.payment_methods.length > 0) {
-    html += `<div class="cat-section">
-      <div class="section-title">💳 СПОСОБЫ ОПЛАТЫ <div class="line"></div></div>
-      <div class="pay-row">`;
+    html += `<div class="cat-section"><div class="section-title">💳 СПОСОБЫ ОПЛАТЫ <div class="line"></div></div><div class="pay-row">`;
     data.payment_methods.forEach(pm => {
       html += `<div class="pay-chip">${pm.name}: ${fmt(pm.amount)} (${pm.count})</div>`;
     });
     html += '</div></div>';
   }
 
-  // Recent transactions
-  html += `<div class="cat-section">
-    <div class="section-title">📋 ПОСЛЕДНИЕ ОПЕРАЦИИ <div class="line"></div></div>`;
+  // ── Recent transactions ──
+  html += `<div class="cat-section"><div class="section-title">📋 ПОСЛЕДНИЕ ОПЕРАЦИИ <div class="line"></div></div>`;
   window._txData = data.transactions;
   data.transactions.slice(0, 15).forEach((tx, i) => {
     const isIncome = tx.type === 'Доход';
     const sign = isIncome ? '+' : '-';
     const cls = isIncome ? 'income' : 'expense';
-    html += `
-      <div class="tx-card" onclick="openEdit(${i})">
-        <div class="tx-emoji">${catEmoji(tx.category)}</div>
-        <div class="tx-info">
-          <div class="tx-desc">${tx.description || 'Без описания'}</div>
-          <div class="tx-meta">${tx.date || '—'} · ${tx.category}${tx.shop ? ' · '+tx.shop : ''}</div>
-        </div>
-        <div class="tx-amount ${cls}">${sign}${fmt(tx.amount)}</div>
-      </div>`;
+    html += `<div class="tx-card" onclick="openEdit(${i})">
+      <div class="tx-emoji">${catEmoji(tx.category)}</div>
+      <div class="tx-info">
+        <div class="tx-desc">${tx.description || 'Без описания'}</div>
+        <div class="tx-meta">${tx.date || '—'} · ${tx.category}${tx.shop ? ' · '+tx.shop : ''}</div>
+      </div>
+      <div class="tx-amount ${cls}">${sign}${fmt(tx.amount)}</div>
+    </div>`;
   });
   html += '</div>';
 
   el.innerHTML = html;
 }
 
-// ═══ EDIT MODAL ═══
+// ═══════════════════════════════════════
+//  SVG BALANCE CHART
+// ═══════════════════════════════════════
+function renderBalanceChart(transactions) {
+  // Group by date, calc cumulative balance
+  const byDate = {};
+  transactions.slice().sort((a,b) => (a.date||'').localeCompare(b.date||'')).forEach(tx => {
+    const d = tx.date || 'N/A';
+    if (!byDate[d]) byDate[d] = 0;
+    byDate[d] += (tx.type === 'Доход' ? tx.amount : -tx.amount);
+  });
+  const dates = Object.keys(byDate).sort();
+  if (dates.length < 2) return '';
+
+  let cumulative = 0;
+  const points = dates.map(d => { cumulative += byDate[d]; return { date: d, val: cumulative }; });
+
+  const W = 440, H = 100, padX = 0, padY = 10;
+  const vals = points.map(p => p.val);
+  const minV = Math.min(...vals, 0);
+  const maxV = Math.max(...vals, 1);
+  const range = maxV - minV || 1;
+
+  function x(i) { return padX + (i / (points.length - 1)) * (W - 2*padX); }
+  function y(v) { return H - padY - ((v - minV) / range) * (H - 2*padY); }
+
+  const linePoints = points.map((p, i) => `${x(i).toFixed(1)},${y(p.val).toFixed(1)}`).join(' ');
+  const areaPoints = `${x(0).toFixed(1)},${(H-padY).toFixed(1)} ${linePoints} ${x(points.length-1).toFixed(1)},${(H-padY).toFixed(1)}`;
+
+  // Date labels (first, mid, last)
+  const labelIdxs = [0, Math.floor(points.length/2), points.length-1];
+  const labels = labelIdxs.map(i => {
+    const d = points[i].date;
+    return `<text x="${x(i).toFixed(1)}" y="${H-1}" fill="#8a7a5a" font-size="8" font-family="Orbitron" text-anchor="middle">${d.slice(5)}</text>`;
+  }).join('');
+
+  return `<div class="chart-card">
+    <div class="chart-title">📉 ДИНАМИКА БАЛАНСА</div>
+    <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="rgba(102,187,106,0.3)"/>
+          <stop offset="100%" stop-color="rgba(102,187,106,0)"/>
+        </linearGradient>
+      </defs>
+      <polygon points="${areaPoints}" fill="url(#areaGrad)"/>
+      <polyline points="${linePoints}" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points.map((p,i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.val).toFixed(1)}" r="2.5" fill="#66bb6a" stroke="#050507" stroke-width="1"/>`).join('')}
+      ${labels}
+    </svg>
+  </div>`;
+}
+
+// ═══════════════════════════════════════
+//  MODALS
+// ═══════════════════════════════════════
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// Close on backdrop click
+['editModal','addModal'].forEach(id => {
+  document.getElementById(id).addEventListener('click', function(e) { if(e.target===this) closeModal(id); });
+});
+
+// ── Edit ──
 function openEdit(idx) {
   const tx = window._txData[idx];
   if (!tx || !tx.id) return;
@@ -388,16 +700,8 @@ function openEdit(idx) {
   document.getElementById('edit-shop').value = tx.shop || '';
   document.getElementById('edit-payment').value = tx.payment_method || '';
   document.getElementById('edit-currency').value = tx.currency || 'PLN';
-  document.getElementById('editModal').classList.add('show');
+  openModal('editModal');
 }
-
-function closeModal() {
-  document.getElementById('editModal').classList.remove('show');
-}
-
-document.getElementById('editModal').addEventListener('click', function(e) {
-  if (e.target === this) closeModal();
-});
 
 async function saveTx() {
   const id = document.getElementById('edit-id').value;
@@ -416,12 +720,8 @@ async function saveTx() {
       method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
     });
     const result = await resp.json();
-    if (result.ok) {
-      closeModal();
-      loadDashboard(currentDays);
-    } else {
-      alert('Ошибка: ' + JSON.stringify(result));
-    }
+    if (result.ok) { closeModal('editModal'); loadDashboard(currentDays); }
+    else alert('Ошибка: ' + JSON.stringify(result));
   } catch(e) { alert('Ошибка: ' + e.message); }
 }
 
@@ -431,14 +731,248 @@ async function deleteTx() {
   try {
     const resp = await fetch(`${API_BASE}/api/transaction/${id}`, {method: 'DELETE'});
     const result = await resp.json();
-    if (result.ok) {
-      closeModal();
-      loadDashboard(currentDays);
-    }
+    if (result.ok) { closeModal('editModal'); loadDashboard(currentDays); }
   } catch(e) { alert('Ошибка: ' + e.message); }
 }
 
-// Init
+// ── Add (FAB) ──
+function openAddModal() {
+  document.getElementById('add-desc').value = '';
+  document.getElementById('add-amount').value = '';
+  document.getElementById('add-date').value = todayStr();
+  document.getElementById('add-type').value = 'Расход';
+  document.getElementById('add-category').value = '❓ Другое';
+  document.getElementById('add-shop').value = '';
+  document.getElementById('add-payment').value = '';
+  document.getElementById('add-currency').value = 'PLN';
+  openModal('addModal');
+}
+
+async function createTx() {
+  const amount = parseFloat(document.getElementById('add-amount').value);
+  if (!amount || amount <= 0) { alert('Введите сумму'); return; }
+  const data = {
+    description: document.getElementById('add-desc').value,
+    date: document.getElementById('add-date').value,
+    amount: amount,
+    type: document.getElementById('add-type').value,
+    category: document.getElementById('add-category').value,
+    shop: document.getElementById('add-shop').value,
+    payment_method: document.getElementById('add-payment').value,
+    currency: document.getElementById('add-currency').value,
+  };
+  try {
+    const resp = await fetch(`${API_BASE}/api/transaction`, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    if (result.ok || result.id) { closeModal('addModal'); loadDashboard(currentDays); }
+    else alert('Ошибка: ' + JSON.stringify(result));
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+// ═══════════════════════════════════════
+//  BUDGETS (Planning tab)
+// ═══════════════════════════════════════
+async function loadBudgets() {
+  const el = document.getElementById('budgets-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА БЮДЖЕТОВ...</p></div>';
+  try {
+    const resp = await fetch(`${API_BASE}/api/budgets`);
+    const budgets = await resp.json();
+    if (!Array.isArray(budgets) || budgets.length === 0) {
+      el.innerHTML = '<div class="placeholder-card"><div class="ph-icon">📊</div><p>Бюджеты не настроены</p></div>';
+      return;
+    }
+    let html = '';
+    budgets.forEach(b => {
+      const pct = b.monthly_limit > 0 ? (b.spent / b.monthly_limit * 100) : 0;
+      const cls = pct > 100 ? 'over' : pct > 80 ? 'warn' : 'ok';
+      html += `<div class="budget-card">
+        <div class="budget-header">
+          <div class="budget-name">${catEmoji(b.category)} ${b.category.replace(/^.\s*/,'')}</div>
+          <div class="budget-amounts"><span>${fmt(b.spent)}</span> / ${fmt(b.monthly_limit)}</div>
+        </div>
+        <div class="budget-bar"><div class="budget-bar-fill ${cls}" style="width:${Math.min(pct,100)}%"></div></div>
+      </div>`;
+    });
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = `<div class="placeholder-card"><div class="ph-icon">⚠️</div><p>Ошибка: ${e.message}</p></div>`;
+  }
+}
+
+// ═══════════════════════════════════════
+//  STATISTICS TAB
+// ═══════════════════════════════════════
+function getStatsPeriod() {
+  const now = new Date();
+  const d = new Date(now.getFullYear(), now.getMonth() + statsMonthOffset, 1);
+  const months = ['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'];
+  return { label: `${months[d.getMonth()]} ${d.getFullYear()}`, year: d.getFullYear(), month: d.getMonth() };
+}
+
+function shiftStatsPeriod(dir) {
+  statsMonthOffset += dir;
+  loadStats();
+}
+
+async function loadStats() {
+  const period = getStatsPeriod();
+  document.getElementById('stats-period-label').textContent = period.label;
+  const el = document.getElementById('stats-content');
+
+  // Load 365 days to have enough data
+  if (!cachedData) {
+    el.innerHTML = '<div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА...</p></div>';
+    try {
+      const resp = await fetch(`${API_BASE}/api/dashboard?days=365`);
+      cachedData = await resp.json();
+    } catch(e) {
+      el.innerHTML = `<div class="empty"><div class="icon">⚠️</div><p>Ошибка: ${e.message}</p></div>`;
+      return;
+    }
+  }
+
+  // Filter transactions for selected month
+  const txAll = cachedData.transactions || [];
+  const txMonth = txAll.filter(tx => {
+    if (!tx.date) return false;
+    const dd = new Date(tx.date);
+    return dd.getFullYear() === period.year && dd.getMonth() === period.month;
+  });
+
+  // Also get previous month for comparison
+  const prevMonth = period.month === 0 ? 11 : period.month - 1;
+  const prevYear = period.month === 0 ? period.year - 1 : period.year;
+  const txPrev = txAll.filter(tx => {
+    if (!tx.date) return false;
+    const dd = new Date(tx.date);
+    return dd.getFullYear() === prevYear && dd.getMonth() === prevMonth;
+  });
+
+  const income = txMonth.filter(t => t.type === 'Доход').reduce((s,t) => s + t.amount, 0);
+  const expense = txMonth.filter(t => t.type !== 'Доход').reduce((s,t) => s + t.amount, 0);
+  const balance = income - expense;
+  const prevIncome = txPrev.filter(t => t.type === 'Доход').reduce((s,t) => s + t.amount, 0);
+  const prevExpense = txPrev.filter(t => t.type !== 'Доход').reduce((s,t) => s + t.amount, 0);
+  const cur = cachedData.currency || 'PLN';
+
+  // Expense categories for donut
+  const catMap = {};
+  txMonth.filter(t => t.type !== 'Доход').forEach(t => {
+    const c = t.category || '❓ Другое';
+    catMap[c] = (catMap[c] || 0) + t.amount;
+  });
+  const cats = Object.entries(catMap).sort((a,b) => b[1] - a[1]);
+
+  let html = '';
+
+  // ── Balance card ──
+  const bClass = balance >= 0 ? 'positive' : 'negative';
+  const bSign = balance >= 0 ? '+' : '';
+  html += `<div class="stat-balance-card">
+    <div class="balance-label">БАЛАНС</div>
+    <div class="balance-amount ${bClass}">${bSign}${fmt(balance)} ${cur}</div>
+  </div>`;
+
+  // ── Donut chart ──
+  if (cats.length > 0) {
+    html += `<div class="cat-section"><div class="section-title">🍩 РАСХОДЫ <div class="line"></div></div>`;
+    let gradParts = [];
+    let angle = 0;
+    cats.forEach(([name, amount], i) => {
+      const pct = expense > 0 ? (amount / expense * 360) : 0;
+      const color = catColor(i);
+      gradParts.push(`${color} ${angle.toFixed(1)}deg ${(angle + pct).toFixed(1)}deg`);
+      angle += pct;
+    });
+    const gradient = gradParts.join(', ');
+    html += `<div class="donut-container">
+      <div class="donut" style="background:conic-gradient(${gradient})">
+        <div class="donut-hole">
+          <div class="donut-total">-${fmt(expense)}</div>
+          <div class="donut-label">РАСХОДЫ</div>
+        </div>
+      </div>
+    </div>
+    <div class="donut-legend">`;
+    cats.forEach(([name, amount], i) => {
+      const pct = expense > 0 ? (amount / expense * 100).toFixed(0) : 0;
+      html += `<div class="donut-legend-item"><div class="donut-legend-dot" style="background:${catColor(i)}"></div>${catEmoji(name)} ${pct}%</div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // ── Cash Flow bars ──
+  html += `<div class="cat-section"><div class="section-title">💸 ДЕНЕЖНЫЙ ПОТОК <div class="line"></div></div>
+    <div class="cashflow-card">
+      <div style="display:flex;justify-content:space-between;font-family:Orbitron;font-size:9px;color:var(--muted);letter-spacing:1px">
+        <span>📈 Доход: <span style="color:var(--green)">${fmt(income)}</span></span>
+        <span>📉 Расход: <span style="color:var(--red)">${fmt(expense)}</span></span>
+      </div>
+      <div class="cashflow-bars">`;
+
+  // Split into weeks
+  const maxFlow = Math.max(income, expense, 1);
+  const incH = Math.round(income / maxFlow * 70);
+  const expH = Math.round(expense / maxFlow * 70);
+  html += `<div class="cashflow-bar-group">
+      <div class="cashflow-bar-wrap">
+        <div class="cashflow-bar inc" style="height:${incH}px"></div>
+        <div class="cashflow-bar exp" style="height:${expH}px"></div>
+      </div>
+      <div class="cashflow-label">${period.label.split(' ')[0].slice(0,3)}</div>
+    </div>`;
+
+  // Previous month for comparison
+  const prevMaxFlow = Math.max(prevIncome, prevExpense, 1);
+  const prevIncH = Math.round(prevIncome / maxFlow * 70);
+  const prevExpH = Math.round(prevExpense / maxFlow * 70);
+  const prevMonths = ['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
+  html += `<div class="cashflow-bar-group">
+      <div class="cashflow-bar-wrap">
+        <div class="cashflow-bar inc" style="height:${prevIncH}px;opacity:0.5"></div>
+        <div class="cashflow-bar exp" style="height:${prevExpH}px;opacity:0.5"></div>
+      </div>
+      <div class="cashflow-label">${prevMonths[prevMonth]}</div>
+    </div>`;
+  html += '</div></div></div>';
+
+  // ── Income Report ──
+  const incomeDiff = prevIncome > 0 ? ((income - prevIncome) / prevIncome * 100) : (income > 0 ? 100 : 0);
+  const badgeCls = incomeDiff >= 0 ? 'up' : 'down';
+  const badgeSign = incomeDiff >= 0 ? '+' : '';
+  html += `<div class="cat-section"><div class="section-title">📋 ОТЧЁТ — ДОХОД <div class="line"></div></div>
+    <div class="report-card">
+      <div class="report-info">
+        <div class="report-label">ДОХОД ЗА ПЕРИОД</div>
+        <div class="report-value" style="color:var(--green)">+${fmt(income)} ${cur}</div>
+      </div>
+      <div class="report-badge ${badgeCls}">${badgeSign}${incomeDiff.toFixed(0)}%</div>
+    </div>
+  </div>`;
+
+  // ── Expense Report ──
+  const expDiff = prevExpense > 0 ? ((expense - prevExpense) / prevExpense * 100) : (expense > 0 ? 100 : 0);
+  const expBadgeCls = expDiff <= 0 ? 'up' : 'down'; // less expense = good
+  const expBadgeSign = expDiff >= 0 ? '+' : '';
+  html += `<div class="cat-section"><div class="section-title">📋 ОТЧЁТ — РАСХОДЫ <div class="line"></div></div>
+    <div class="report-card">
+      <div class="report-info">
+        <div class="report-label">РАСХОДЫ ЗА ПЕРИОД</div>
+        <div class="report-value" style="color:var(--red)">-${fmt(expense)} ${cur}</div>
+      </div>
+      <div class="report-badge ${expBadgeCls}">${expBadgeSign}${expDiff.toFixed(0)}%</div>
+    </div>
+  </div>`;
+
+  el.innerHTML = html;
+}
+
+// ═══════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════
 loadDashboard(currentDays);
 </script>
 </body>
