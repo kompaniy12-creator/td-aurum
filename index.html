@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>A.U.R.U.M. — Finance Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#050507;--surface:#0a0805;--card:#111008;--border:rgba(102,187,106,0.08);
+  --glow:rgba(102,187,106,0.15);--text:#f0e6d0;--muted:#8a7a5a;
+  --gold:#ffc107;--gold-dim:#b8860b;--red:#e53935;--cyan:#00e5ff;
+  --green:#66bb6a;--green-dim:#2e7d32;--income:#66bb6a;--expense:#e53935}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
+  min-height:100vh;overflow-x:hidden;padding-bottom:80px}
+
+/* HUD Background */
+.hud-bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.hud-circle{position:absolute;border:1px solid rgba(102,187,106,0.04);border-radius:50%}
+.c1{width:500px;height:500px;top:-100px;left:50%;transform:translateX(-50%);animation:rot 60s linear infinite}
+.c2{width:350px;height:350px;top:-25px;left:50%;transform:translateX(-50%);animation:rot 40s linear infinite reverse}
+@keyframes rot{from{transform:translateX(-50%) rotate(0)}to{transform:translateX(-50%) rotate(360deg)}}
+.scanline{position:fixed;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(102,187,106,0.06),transparent);animation:scan 8s linear infinite;pointer-events:none;z-index:999}
+@keyframes scan{from{top:0}to{top:100vh}}
+
+/* Header */
+.header{position:relative;z-index:1;text-align:center;padding:20px 16px 10px}
+.header .icon{font-size:40px;margin-bottom:4px}
+.header h1{font-family:'Orbitron',sans-serif;font-size:20px;font-weight:800;letter-spacing:3px;
+  background:linear-gradient(135deg,#81c784,#66bb6a,#2e7d32);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 12px rgba(102,187,106,0.3))}
+.header .sub{font-family:'Orbitron',sans-serif;font-size:8px;color:var(--muted);letter-spacing:2px;margin-top:2px}
+
+/* Arc Reactor */
+.arc{position:fixed;top:10px;left:50%;transform:translateX(-50%);width:120px;height:120px;
+  background:radial-gradient(circle,rgba(102,187,106,0.08),transparent 70%);border-radius:50%;
+  animation:pulse 4s ease-in-out infinite;pointer-events:none;z-index:0}
+@keyframes pulse{0%,100%{opacity:.3;transform:translateX(-50%) scale(1)}50%{opacity:.6;transform:translateX(-50%) scale(1.05)}}
+
+/* Content */
+.content{position:relative;z-index:1;max-width:500px;margin:0 auto;padding:0 12px}
+
+/* Period Tabs */
+.period-tabs{display:flex;gap:4px;justify-content:center;margin:12px 0;flex-wrap:wrap}
+.period-tab{font-family:'Orbitron',sans-serif;font-size:9px;padding:6px 12px;border-radius:20px;
+  border:1px solid rgba(102,187,106,0.15);background:transparent;color:var(--muted);cursor:pointer;
+  letter-spacing:1px;transition:all .2s}
+.period-tab.active{background:rgba(102,187,106,0.1);color:var(--green);border-color:rgba(102,187,106,0.4);
+  box-shadow:0 0 10px rgba(102,187,106,0.1)}
+
+/* Balance Card */
+.balance-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid rgba(102,187,106,0.1);border-radius:16px;padding:20px;margin:12px 0;
+  position:relative;overflow:hidden;text-align:center}
+.balance-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent)}
+.balance-label{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:8px}
+.balance-amount{font-family:'Orbitron',sans-serif;font-size:28px;font-weight:800}
+.balance-amount.positive{color:var(--green)}
+.balance-amount.negative{color:var(--red)}
+
+/* Income/Expense Row */
+.flow-row{display:flex;gap:10px;margin:10px 0}
+.flow-box{flex:1;background:rgba(17,16,8,0.9);border:1px solid;border-radius:12px;padding:14px;text-align:center}
+.flow-box.income{border-color:rgba(102,187,106,0.15)}
+.flow-box.expense{border-color:rgba(229,57,53,0.15)}
+.flow-icon{font-size:20px;margin-bottom:4px}
+.flow-label{font-family:'Orbitron',sans-serif;font-size:8px;color:var(--muted);letter-spacing:1px;margin-bottom:6px}
+.flow-amount{font-family:'Orbitron',sans-serif;font-size:16px;font-weight:700}
+.flow-box.income .flow-amount{color:var(--green)}
+.flow-box.expense .flow-amount{color:var(--red)}
+.flow-count{font-size:10px;color:var(--muted);margin-top:4px}
+
+/* Category Card */
+.cat-section{margin:16px 0}
+.section-title{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--gold-dim);
+  letter-spacing:2px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.section-title .line{flex:1;height:1px;background:linear-gradient(90deg,rgba(255,193,7,0.2),transparent)}
+
+.cat-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px}
+.cat-emoji{font-size:22px;min-width:30px;text-align:center}
+.cat-info{flex:1}
+.cat-name{font-size:13px;font-weight:600;margin-bottom:2px}
+.cat-count{font-size:10px;color:var(--muted)}
+.cat-amount{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;color:var(--red);white-space:nowrap}
+.cat-bar{width:100%;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;margin-top:4px;overflow:hidden}
+.cat-bar-fill{height:100%;border-radius:2px;transition:width .5s ease}
+
+/* Recent Transactions */
+.tx-card{background:linear-gradient(135deg,rgba(17,16,8,0.9),rgba(10,8,5,0.95));
+  border:1px solid var(--border);border-radius:10px;padding:10px 12px;margin-bottom:6px;
+  display:flex;align-items:center;gap:10px}
+.tx-emoji{font-size:18px;min-width:26px;text-align:center}
+.tx-info{flex:1;min-width:0}
+.tx-desc{font-size:12px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tx-meta{font-size:10px;color:var(--muted);margin-top:2px}
+.tx-amount{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700;white-space:nowrap}
+.tx-amount.income{color:var(--green)}
+.tx-amount.expense{color:var(--red)}
+
+/* Payment Methods */
+.pay-row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.pay-chip{font-family:'Orbitron',sans-serif;font-size:9px;padding:6px 12px;border-radius:20px;
+  border:1px solid rgba(0,229,255,0.12);background:rgba(0,229,255,0.03);color:var(--cyan);
+  letter-spacing:1px}
+
+/* Loading */
+.loading{text-align:center;padding:40px}
+.spinner{width:40px;height:40px;border:3px solid rgba(102,187,106,0.1);border-top:3px solid var(--green);
+  border-radius:50%;animation:spin 1s linear infinite;margin:0 auto 12px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading p{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--muted);letter-spacing:1px}
+
+/* Empty State */
+.empty{text-align:center;padding:40px 20px}
+.empty .icon{font-size:48px;margin-bottom:12px}
+.empty p{color:var(--muted);font-size:13px}
+
+/* Footer */
+.footer{text-align:center;padding:20px;font-size:10px;color:var(--muted)}
+.footer a{color:var(--green);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="hud-bg"><div class="hud-circle c1"></div><div class="hud-circle c2"></div></div>
+<div class="scanline"></div>
+<div class="arc"></div>
+
+<div class="header">
+  <div class="icon">💰</div>
+  <h1>A.U.R.U.M.</h1>
+  <div class="sub">Automated Universal Resource & Utility Manager</div>
+</div>
+
+<div class="content">
+  <div class="period-tabs">
+    <button class="period-tab active" data-days="7">7 дней</button>
+    <button class="period-tab" data-days="30">Месяц</button>
+    <button class="period-tab" data-days="90">3 месяца</button>
+    <button class="period-tab" data-days="365">Год</button>
+  </div>
+
+  <div id="dashboard">
+    <div class="loading">
+      <div class="spinner"></div>
+      <p>ЗАГРУЗКА ДАННЫХ...</p>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  Powered by <a href="#">A.U.R.U.M.</a> ⚡ Stark Industries Style
+</div>
+
+<script>
+let tg;
+try { tg = window.Telegram && Telegram.WebApp; if(tg) tg.ready(); } catch(e) {}
+
+// API hosted on server, dashboard on Netlify
+const API_BASE = window.location.hostname === 'localhost' || window.location.port
+  ? window.location.origin
+  : 'https://snow-knights-white-soul.trycloudflare.com';
+let currentDays = 7;
+
+// Period tabs
+document.querySelectorAll('.period-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.period-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    currentDays = parseInt(tab.dataset.days);
+    loadDashboard(currentDays);
+  });
+});
+
+function fmt(n) {
+  return new Intl.NumberFormat('pl-PL', {minimumFractionDigits:2, maximumFractionDigits:2}).format(n);
+}
+
+function catEmoji(cat) {
+  const map = {'🛒 Продукты':'🛒','🍽 Рестораны':'🍽','🚗 Транспорт':'🚗','🏠 Жильё':'🏠',
+    '💊 Здоровье':'💊','👔 Одежда':'👔','🎮 Развлечения':'🎮','📱 Связь':'📱','💼 Бизнес':'💼',
+    '📦 Покупки':'📦','✈️ Путешествия':'✈️','📚 Образование':'📚','🎁 Подарки':'🎁',
+    '🏦 Финансы':'🏦','💰 Доход':'💰','❓ Другое':'❓'};
+  for(const [k,v] of Object.entries(map)) if(cat.includes(v) || cat===k) return v;
+  return '📊';
+}
+
+function catColor(i) {
+  const colors = ['#66bb6a','#ffc107','#42a5f5','#ef5350','#ab47bc','#26c6da','#ff7043','#8d6e63','#78909c','#ec407a'];
+  return colors[i % colors.length];
+}
+
+async function loadDashboard(days) {
+  const el = document.getElementById('dashboard');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА ДАННЫХ...</p></div>';
+
+  try {
+    const resp = await fetch(`${API_BASE}/api/dashboard?days=${days}`);
+    const data = await resp.json();
+    renderDashboard(data);
+  } catch(e) {
+    el.innerHTML = `<div class="empty"><div class="icon">⚠️</div><p>Ошибка загрузки: ${e.message}</p></div>`;
+  }
+}
+
+function renderDashboard(data) {
+  const el = document.getElementById('dashboard');
+  if(!data.transactions || data.transactions.length === 0) {
+    el.innerHTML = '<div class="empty"><div class="icon">📭</div><p>Нет транзакций за выбранный период.<br>Отправь чек или текст в бот!</p></div>';
+    return;
+  }
+
+  const balance = data.total_income - data.total_expense;
+  const balClass = balance >= 0 ? 'positive' : 'negative';
+  const balSign = balance >= 0 ? '+' : '';
+
+  let html = `
+    <div class="balance-card">
+      <div class="balance-label">БАЛАНС ЗА ПЕРИОД</div>
+      <div class="balance-amount ${balClass}">${balSign}${fmt(balance)} ${data.currency}</div>
+    </div>
+
+    <div class="flow-row">
+      <div class="flow-box income">
+        <div class="flow-icon">📈</div>
+        <div class="flow-label">ДОХОД</div>
+        <div class="flow-amount">+${fmt(data.total_income)}</div>
+        <div class="flow-count">${data.income_count} операций</div>
+      </div>
+      <div class="flow-box expense">
+        <div class="flow-icon">📉</div>
+        <div class="flow-label">РАСХОД</div>
+        <div class="flow-amount">-${fmt(data.total_expense)}</div>
+        <div class="flow-count">${data.expense_count} операций</div>
+      </div>
+    </div>`;
+
+  // Categories (expenses)
+  if(data.categories && data.categories.length > 0) {
+    const maxCat = data.categories[0].amount;
+    html += `<div class="cat-section">
+      <div class="section-title">📊 РАСХОДЫ ПО КАТЕГОРИЯМ <div class="line"></div></div>`;
+    data.categories.forEach((cat, i) => {
+      const pct = maxCat > 0 ? (cat.amount / maxCat * 100) : 0;
+      const color = catColor(i);
+      html += `
+        <div class="cat-card">
+          <div class="cat-emoji">${catEmoji(cat.name)}</div>
+          <div class="cat-info">
+            <div class="cat-name">${cat.name}</div>
+            <div class="cat-count">${cat.count} транз. · ${cat.percent}%</div>
+            <div class="cat-bar"><div class="cat-bar-fill" style="width:${pct}%;background:${color}"></div></div>
+          </div>
+          <div class="cat-amount">-${fmt(cat.amount)}</div>
+        </div>`;
+    });
+    html += '</div>';
+  }
+
+  // Payment methods
+  if(data.payment_methods && data.payment_methods.length > 0) {
+    html += `<div class="cat-section">
+      <div class="section-title">💳 СПОСОБЫ ОПЛАТЫ <div class="line"></div></div>
+      <div class="pay-row">`;
+    data.payment_methods.forEach(pm => {
+      html += `<div class="pay-chip">${pm.name}: ${fmt(pm.amount)} (${pm.count})</div>`;
+    });
+    html += '</div></div>';
+  }
+
+  // Recent transactions
+  html += `<div class="cat-section">
+    <div class="section-title">📋 ПОСЛЕДНИЕ ОПЕРАЦИИ <div class="line"></div></div>`;
+  data.transactions.slice(0, 15).forEach(tx => {
+    const isIncome = tx.type === 'Доход';
+    const sign = isIncome ? '+' : '-';
+    const cls = isIncome ? 'income' : 'expense';
+    html += `
+      <div class="tx-card">
+        <div class="tx-emoji">${catEmoji(tx.category)}</div>
+        <div class="tx-info">
+          <div class="tx-desc">${tx.description || 'Без описания'}</div>
+          <div class="tx-meta">${tx.date || '—'} · ${tx.category}${tx.shop ? ' · '+tx.shop : ''}</div>
+        </div>
+        <div class="tx-amount ${cls}">${sign}${fmt(tx.amount)}</div>
+      </div>`;
+  });
+  html += '</div>';
+
+  el.innerHTML = html;
+}
+
+// Init
+loadDashboard(currentDays);
+</script>
+</body>
+</html>
