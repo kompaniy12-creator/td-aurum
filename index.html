@@ -9,10 +9,336 @@
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-:root{--bg:#050507;--surface:#0a0805;--card:#111008;--border:rgba(102,187,106,0.08);
-  --glow:rgba(102,187,106,0.15);--text:#f0e6d0;--muted:#8a7a5a;
+/* ═══ THEME: HUD (Iron Man) ═══ */
+body.theme-hud,body:not(.theme-dark):not(.theme-light){
+  --bg:#050507;--surface:#0a0805;--card:#111008;
+  --border:rgba(102,187,106,0.08);--glow:rgba(102,187,106,0.15);
+  --text:#f0e6d0;--muted:#8a7a5a;
   --gold:#ffc107;--gold-dim:#b8860b;--red:#e53935;--cyan:#00e5ff;
-  --green:#66bb6a;--green-dim:#2e7d32;--income:#66bb6a;--expense:#e53935}
+  --green:#66bb6a;--green-dim:#2e7d32;--income:#66bb6a;--expense:#e53935;
+  --accent:#66bb6a;--accent-dim:#2e7d32;
+  --card-bg:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  --card-bg-solid:#111008;--card-border:rgba(102,187,106,0.08);
+  --modal-bg:linear-gradient(135deg,rgba(17,16,8,0.98),rgba(10,8,5,0.99));
+  --modal-border:rgba(102,187,106,0.15);
+  --input-bg:rgba(255,170,0,0.03);--input-border:rgba(255,170,0,0.12);
+  --input-focus:var(--green);
+  --nav-bg:linear-gradient(180deg,rgba(10,8,5,0.95),rgba(5,5,7,0.99));
+  --nav-border-top:rgba(102,187,106,0.1);--nav-line:rgba(102,187,106,0.3);
+  --fab-bg:linear-gradient(135deg,var(--green),var(--green-dim));
+  --fab-shadow:rgba(102,187,106,0.4);
+  --section-color:#b8860b;--section-line:rgba(255,193,7,0.2);
+  --top-line:linear-gradient(90deg,transparent,var(--green),transparent);
+  --chip-border:rgba(0,229,255,0.12);--chip-bg:rgba(0,229,255,0.03);--chip-color:#00e5ff;
+  --scroll-thumb:var(--green-dim);
+  --btn-save-bg:linear-gradient(135deg,rgba(102,187,106,0.8),rgba(46,125,50,0.8));
+  --btn-delete-bg:linear-gradient(135deg,rgba(229,57,53,0.2),rgba(229,57,53,0.1));
+  --font-heading:'Orbitron',sans-serif;
+  --heading-grad:linear-gradient(135deg,#81c784,#66bb6a,#2e7d32);
+  --placeholder-bg:linear-gradient(135deg,rgba(17,16,8,0.9),rgba(10,8,5,0.95));
+  --placeholder-border:rgba(102,187,106,0.12);
+  --stat-btn-border:rgba(102,187,106,0.2);--stat-btn-hover:rgba(102,187,106,0.1);
+  --stat-btn-color:var(--green);
+  --toggle-track-bg:rgba(255,255,255,0.08);--toggle-track-border:rgba(255,255,255,0.1);
+  --toggle-track-active-bg:rgba(102,187,106,0.2);--toggle-track-active-border:rgba(102,187,106,0.5);
+  --radio-bg:rgba(255,255,255,0.03);--radio-border:rgba(255,255,255,0.08);
+  --radio-hover:rgba(102,187,106,0.2);--radio-selected-bg:rgba(102,187,106,0.08);
+  --radio-selected-border:rgba(102,187,106,0.5);
+  --badge-bg:rgba(255,193,7,0.15);--badge-color:var(--gold);--badge-border:rgba(255,193,7,0.3);
+  --cat-item-bg:rgba(255,255,255,0.03);--cat-item-border:rgba(255,255,255,0.06);
+  --bar-bg:rgba(255,255,255,0.05);--bar-track:rgba(255,255,255,0.04);
+  --overlay-bg:rgba(0,0,0,0.85);
+  --about-border:rgba(255,255,255,0.04);
+  --budget-ok:linear-gradient(90deg,var(--green),var(--green-dim));
+  --budget-warn:linear-gradient(90deg,var(--gold),#ff9800);
+  --budget-over:linear-gradient(90deg,var(--red),#c62828);
+  --inc-bar:linear-gradient(180deg,var(--green),var(--green-dim));
+  --exp-bar:linear-gradient(180deg,var(--red),#c62828);
+  --invest-top-line:linear-gradient(90deg,transparent,var(--gold),transparent);
+  --acc-top-line:linear-gradient(90deg,transparent,var(--green),transparent);
+  --area-grad-start:rgba(102,187,106,0.3);--area-grad-end:rgba(102,187,106,0);
+  --chart-line:#66bb6a;--chart-dot:#66bb6a;--chart-dot-stroke:#050507;
+  --select-arrow:%238a7a5a;--select-option-bg:#111;--select-option-color:#f0e6d0;
+}
+
+/* ═══ THEME: DARK ═══ */
+body.theme-dark{
+  --bg:#1a1a2e;--surface:#16213e;--card:#16213e;
+  --border:rgba(255,255,255,0.08);--glow:rgba(15,52,96,0.3);
+  --text:#e8e8e8;--muted:#a0a0b0;
+  --gold:#bb86fc;--gold-dim:#533483;--red:#e74c3c;--cyan:#64b5f6;
+  --green:#4ecca3;--green-dim:#2d8a6e;--income:#4ecca3;--expense:#e74c3c;
+  --accent:#0f3460;--accent-dim:#0a2444;
+  --card-bg:#16213e;--card-bg-solid:#16213e;--card-border:rgba(255,255,255,0.08);
+  --modal-bg:#16213e;--modal-border:rgba(255,255,255,0.1);
+  --input-bg:rgba(255,255,255,0.04);--input-border:rgba(255,255,255,0.12);
+  --input-focus:#4ecca3;
+  --nav-bg:#111a30;--nav-border-top:rgba(255,255,255,0.08);--nav-line:rgba(79,209,163,0.3);
+  --fab-bg:linear-gradient(135deg,#4ecca3,#2d8a6e);
+  --fab-shadow:rgba(78,204,163,0.35);
+  --section-color:#bb86fc;--section-line:rgba(187,134,252,0.2);
+  --top-line:linear-gradient(90deg,transparent,#4ecca3,transparent);
+  --chip-border:rgba(100,181,246,0.2);--chip-bg:rgba(100,181,246,0.06);--chip-color:#64b5f6;
+  --scroll-thumb:#2d8a6e;
+  --btn-save-bg:linear-gradient(135deg,#4ecca3,#2d8a6e);
+  --btn-delete-bg:linear-gradient(135deg,rgba(231,76,60,0.2),rgba(231,76,60,0.1));
+  --font-heading:'Inter',sans-serif;
+  --heading-grad:linear-gradient(135deg,#4ecca3,#0f3460,#533483);
+  --placeholder-bg:#121d35;--placeholder-border:rgba(255,255,255,0.06);
+  --stat-btn-border:rgba(78,204,163,0.2);--stat-btn-hover:rgba(78,204,163,0.1);
+  --stat-btn-color:#4ecca3;
+  --toggle-track-bg:rgba(255,255,255,0.08);--toggle-track-border:rgba(255,255,255,0.1);
+  --toggle-track-active-bg:rgba(78,204,163,0.2);--toggle-track-active-border:rgba(78,204,163,0.5);
+  --radio-bg:rgba(255,255,255,0.04);--radio-border:rgba(255,255,255,0.08);
+  --radio-hover:rgba(78,204,163,0.15);--radio-selected-bg:rgba(78,204,163,0.1);
+  --radio-selected-border:rgba(78,204,163,0.4);
+  --badge-bg:rgba(187,134,252,0.15);--badge-color:#bb86fc;--badge-border:rgba(187,134,252,0.3);
+  --cat-item-bg:rgba(255,255,255,0.04);--cat-item-border:rgba(255,255,255,0.06);
+  --bar-bg:rgba(255,255,255,0.06);--bar-track:rgba(255,255,255,0.05);
+  --overlay-bg:rgba(0,0,0,0.75);
+  --about-border:rgba(255,255,255,0.06);
+  --budget-ok:linear-gradient(90deg,#4ecca3,#2d8a6e);
+  --budget-warn:linear-gradient(90deg,#bb86fc,#9c64d6);
+  --budget-over:linear-gradient(90deg,#e74c3c,#c0392b);
+  --inc-bar:linear-gradient(180deg,#4ecca3,#2d8a6e);
+  --exp-bar:linear-gradient(180deg,#e74c3c,#c0392b);
+  --invest-top-line:linear-gradient(90deg,transparent,#bb86fc,transparent);
+  --acc-top-line:linear-gradient(90deg,transparent,#4ecca3,transparent);
+  --area-grad-start:rgba(78,204,163,0.3);--area-grad-end:rgba(78,204,163,0);
+  --chart-line:#4ecca3;--chart-dot:#4ecca3;--chart-dot-stroke:#1a1a2e;
+  --select-arrow:%23a0a0b0;--select-option-bg:#16213e;--select-option-color:#e8e8e8;
+}
+
+/* ═══ THEME: LIGHT ═══ */
+body.theme-light{
+  --bg:#f5f5f5;--surface:#ffffff;--card:#ffffff;
+  --border:rgba(0,0,0,0.06);--glow:rgba(9,132,227,0.1);
+  --text:#2d3436;--muted:#636e72;
+  --gold:#6c5ce7;--gold-dim:#5f4dd0;--red:#d63031;--cyan:#0984e3;
+  --green:#00b894;--green-dim:#00a381;--income:#00b894;--expense:#d63031;
+  --accent:#0984e3;--accent-dim:#0770c2;
+  --card-bg:#ffffff;--card-bg-solid:#ffffff;--card-border:rgba(0,0,0,0.06);
+  --modal-bg:#ffffff;--modal-border:rgba(0,0,0,0.08);
+  --input-bg:rgba(0,0,0,0.02);--input-border:rgba(0,0,0,0.1);
+  --input-focus:#0984e3;
+  --nav-bg:#ffffff;--nav-border-top:rgba(0,0,0,0.08);--nav-line:rgba(9,132,227,0.3);
+  --fab-bg:linear-gradient(135deg,#0984e3,#0770c2);
+  --fab-shadow:rgba(9,132,227,0.35);
+  --section-color:#6c5ce7;--section-line:rgba(108,92,231,0.2);
+  --top-line:linear-gradient(90deg,transparent,#0984e3,transparent);
+  --chip-border:rgba(9,132,227,0.15);--chip-bg:rgba(9,132,227,0.05);--chip-color:#0984e3;
+  --scroll-thumb:#b2bec3;
+  --btn-save-bg:linear-gradient(135deg,#0984e3,#0770c2);
+  --btn-delete-bg:linear-gradient(135deg,rgba(214,48,49,0.1),rgba(214,48,49,0.05));
+  --font-heading:'Inter',sans-serif;
+  --heading-grad:linear-gradient(135deg,#0984e3,#6c5ce7,#00b894);
+  --placeholder-bg:#fafafa;--placeholder-border:rgba(0,0,0,0.06);
+  --stat-btn-border:rgba(9,132,227,0.2);--stat-btn-hover:rgba(9,132,227,0.08);
+  --stat-btn-color:#0984e3;
+  --toggle-track-bg:rgba(0,0,0,0.08);--toggle-track-border:rgba(0,0,0,0.12);
+  --toggle-track-active-bg:rgba(9,132,227,0.15);--toggle-track-active-border:rgba(9,132,227,0.5);
+  --radio-bg:rgba(0,0,0,0.02);--radio-border:rgba(0,0,0,0.08);
+  --radio-hover:rgba(9,132,227,0.08);--radio-selected-bg:rgba(9,132,227,0.08);
+  --radio-selected-border:rgba(9,132,227,0.4);
+  --badge-bg:rgba(108,92,231,0.1);--badge-color:#6c5ce7;--badge-border:rgba(108,92,231,0.25);
+  --cat-item-bg:rgba(0,0,0,0.02);--cat-item-border:rgba(0,0,0,0.06);
+  --bar-bg:rgba(0,0,0,0.05);--bar-track:rgba(0,0,0,0.04);
+  --overlay-bg:rgba(0,0,0,0.4);
+  --about-border:rgba(0,0,0,0.06);
+  --budget-ok:linear-gradient(90deg,#00b894,#00a381);
+  --budget-warn:linear-gradient(90deg,#fdcb6e,#f39c12);
+  --budget-over:linear-gradient(90deg,#d63031,#c0392b);
+  --inc-bar:linear-gradient(180deg,#00b894,#00a381);
+  --exp-bar:linear-gradient(180deg,#d63031,#c0392b);
+  --invest-top-line:linear-gradient(90deg,transparent,#6c5ce7,transparent);
+  --acc-top-line:linear-gradient(90deg,transparent,#0984e3,transparent);
+  --area-grad-start:rgba(0,184,148,0.25);--area-grad-end:rgba(0,184,148,0);
+  --chart-line:#00b894;--chart-dot:#00b894;--chart-dot-stroke:#f5f5f5;
+  --select-arrow:%23636e72;--select-option-bg:#ffffff;--select-option-color:#2d3436;
+}
+
+/* ═══ THEME: HUD-only elements ═══ */
+body:not(.theme-hud):is(.theme-dark,.theme-light) .hud-bg,
+body:not(.theme-hud):is(.theme-dark,.theme-light) .scanline,
+body:not(.theme-hud):is(.theme-dark,.theme-light) .arc{display:none!important}
+/* Dark/Light card style overrides */
+body.theme-dark .balance-card,body.theme-dark .cat-card,body.theme-dark .tx-card,
+body.theme-dark .chart-card,body.theme-dark .top-exp-card,body.theme-dark .flow-box,
+body.theme-dark .budget-card,body.theme-dark .settings-item,body.theme-dark .report-card,
+body.theme-dark .cashflow-card,body.theme-dark .invest-card,body.theme-dark .invest-portfolio,
+body.theme-dark .stat-balance-card,body.theme-dark .account-card,
+body.theme-dark .modal,body.theme-dark .placeholder-card{
+  background:var(--card-bg)!important;border-color:var(--card-border)!important;
+  border-radius:14px;box-shadow:0 2px 12px rgba(0,0,0,0.3)}
+body.theme-light .balance-card,body.theme-light .cat-card,body.theme-light .tx-card,
+body.theme-light .chart-card,body.theme-light .top-exp-card,body.theme-light .flow-box,
+body.theme-light .budget-card,body.theme-light .settings-item,body.theme-light .report-card,
+body.theme-light .cashflow-card,body.theme-light .invest-card,body.theme-light .invest-portfolio,
+body.theme-light .stat-balance-card,body.theme-light .account-card,
+body.theme-light .modal,body.theme-light .placeholder-card{
+  background:var(--card-bg)!important;border-color:var(--card-border)!important;
+  border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,0.06)}
+/* Non-HUD heading font */
+body.theme-dark .header h1,body.theme-dark .header .sub,
+body.theme-dark .balance-label,body.theme-dark .flow-label,body.theme-dark .period-tab,
+body.theme-dark .section-title,body.theme-dark .nav-label,body.theme-dark .chart-card .chart-title,
+body.theme-dark .budget-amounts,body.theme-dark .about-title,body.theme-dark .about-subtitle,
+body.theme-dark .about-key,body.theme-dark .modal h2,body.theme-dark .modal .field label,
+body.theme-dark .stats-period-label,body.theme-dark .donut-hole .donut-total,
+body.theme-dark .donut-hole .donut-label,body.theme-dark .report-info .report-label,
+body.theme-dark .report-info .report-value,body.theme-dark .report-badge,
+body.theme-dark .cashflow-label,body.theme-dark .invest-portfolio .port-label,
+body.theme-dark .invest-portfolio .port-value,body.theme-dark .invest-portfolio .port-stat-label,
+body.theme-dark .invest-portfolio .port-stat-val,body.theme-dark .invest-card .inv-symbol,
+body.theme-dark .invest-type-badge,body.theme-dark .invest-card .inv-price,
+body.theme-dark .invest-card .inv-profit,body.theme-dark .pay-chip,
+body.theme-dark .acc-name,body.theme-dark .acc-balance,body.theme-dark .acc-currency,
+body.theme-dark .loading p,body.theme-dark .placeholder-card p,body.theme-dark .settings-value,
+body.theme-dark .modal-actions button,body.theme-dark .tx-amount,body.theme-dark .cat-amount,
+body.theme-dark .balance-amount,body.theme-dark .flow-amount,body.theme-dark .top-exp-val,
+body.theme-dark .budget-name,
+body.theme-light .header h1,body.theme-light .header .sub,
+body.theme-light .balance-label,body.theme-light .flow-label,body.theme-light .period-tab,
+body.theme-light .section-title,body.theme-light .nav-label,body.theme-light .chart-card .chart-title,
+body.theme-light .budget-amounts,body.theme-light .about-title,body.theme-light .about-subtitle,
+body.theme-light .about-key,body.theme-light .modal h2,body.theme-light .modal .field label,
+body.theme-light .stats-period-label,body.theme-light .donut-hole .donut-total,
+body.theme-light .donut-hole .donut-label,body.theme-light .report-info .report-label,
+body.theme-light .report-info .report-value,body.theme-light .report-badge,
+body.theme-light .cashflow-label,body.theme-light .invest-portfolio .port-label,
+body.theme-light .invest-portfolio .port-value,body.theme-light .invest-portfolio .port-stat-label,
+body.theme-light .invest-portfolio .port-stat-val,body.theme-light .invest-card .inv-symbol,
+body.theme-light .invest-type-badge,body.theme-light .invest-card .inv-price,
+body.theme-light .invest-card .inv-profit,body.theme-light .pay-chip,
+body.theme-light .acc-name,body.theme-light .acc-balance,body.theme-light .acc-currency,
+body.theme-light .loading p,body.theme-light .placeholder-card p,body.theme-light .settings-value,
+body.theme-light .modal-actions button,body.theme-light .tx-amount,body.theme-light .cat-amount,
+body.theme-light .balance-amount,body.theme-light .flow-amount,body.theme-light .top-exp-val,
+body.theme-light .budget-name{font-family:'Inter',sans-serif!important}
+/* Light theme text color overrides */
+body.theme-light .header h1{-webkit-text-fill-color:unset;background:none;color:var(--accent);
+  filter:none;font-weight:700;font-size:22px}
+body.theme-light .header .sub{color:var(--muted)}
+body.theme-light .about-title{-webkit-text-fill-color:unset;background:none;
+  color:var(--accent);filter:none}
+/* Dark theme heading gradient */
+body.theme-dark .header h1{background:var(--heading-grad);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;filter:drop-shadow(0 0 8px rgba(78,204,163,0.2))}
+body.theme-dark .about-title{background:var(--heading-grad);-webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;filter:drop-shadow(0 0 8px rgba(78,204,163,0.2))}
+/* Non-HUD decorative lines on cards */
+body.theme-dark .balance-card::before,body.theme-dark .modal::before,
+body.theme-dark .stat-balance-card::before,body.theme-dark .account-card::before,
+body.theme-dark .invest-portfolio::before,body.theme-dark .chart-card::before{
+  background:var(--top-line)}
+body.theme-light .balance-card::before,body.theme-light .modal::before,
+body.theme-light .stat-balance-card::before,body.theme-light .invest-portfolio::before,
+body.theme-light .chart-card::before{background:var(--top-line)}
+body.theme-light .account-card::before{background:none}
+/* Bottom nav theming */
+body.theme-dark .bottom-nav{background:var(--nav-bg);border-top:1px solid var(--nav-border-top)}
+body.theme-dark .bottom-nav::before{background:linear-gradient(90deg,transparent,var(--nav-line),transparent)}
+body.theme-dark .nav-item.active{color:var(--green)}
+body.theme-dark .nav-item.active::after{background:var(--green);box-shadow:0 0 8px rgba(78,204,163,0.4)}
+body.theme-light .bottom-nav{background:var(--nav-bg);border-top:1px solid var(--nav-border-top);
+  box-shadow:0 -2px 10px rgba(0,0,0,0.04)}
+body.theme-light .bottom-nav::before{background:none}
+body.theme-light .nav-item{color:var(--muted)}
+body.theme-light .nav-item.active{color:var(--accent)}
+body.theme-light .nav-item.active::after{background:var(--accent);box-shadow:0 0 6px rgba(9,132,227,0.3)}
+/* FAB theming */
+body.theme-dark .fab,body.theme-light .fab{background:var(--fab-bg);
+  box-shadow:0 4px 12px rgba(0,0,0,0.3),0 0 20px var(--fab-shadow)}
+/* Input theming */
+body.theme-dark .modal .field input,body.theme-dark .modal .field select,
+body.theme-dark .cat-add-row input{background:var(--input-bg);border-color:var(--input-border);color:var(--text)}
+body.theme-dark .modal .field input:focus,body.theme-dark .modal .field select:focus,
+body.theme-dark .cat-add-row input:focus{border-color:var(--input-focus);box-shadow:0 0 8px rgba(78,204,163,0.15)}
+body.theme-light .modal .field input,body.theme-light .modal .field select,
+body.theme-light .cat-add-row input{background:var(--input-bg);border-color:var(--input-border);color:var(--text)}
+body.theme-light .modal .field input:focus,body.theme-light .modal .field select:focus,
+body.theme-light .cat-add-row input:focus{border-color:var(--input-focus);box-shadow:0 0 6px rgba(9,132,227,0.12)}
+/* Toggle theming */
+body.theme-dark .hud-toggle .toggle-track{background:var(--toggle-track-bg);border-color:var(--toggle-track-border)}
+body.theme-dark .hud-toggle input:checked+.toggle-track{background:var(--toggle-track-active-bg);border-color:var(--toggle-track-active-border)}
+body.theme-dark .hud-toggle input:checked~.toggle-thumb{background:var(--green)}
+body.theme-light .hud-toggle .toggle-track{background:var(--toggle-track-bg);border-color:var(--toggle-track-border)}
+body.theme-light .hud-toggle input:checked+.toggle-track{background:var(--toggle-track-active-bg);border-color:var(--toggle-track-active-border)}
+body.theme-light .hud-toggle input:checked~.toggle-thumb{background:var(--accent);box-shadow:0 0 6px rgba(9,132,227,0.3)}
+/* Radio theming */
+body.theme-dark .hud-radio{background:var(--radio-bg);border-color:var(--radio-border)}
+body.theme-dark .hud-radio:hover{border-color:var(--radio-hover)}
+body.theme-dark .hud-radio.selected{border-color:var(--radio-selected-border);background:var(--radio-selected-bg)}
+body.theme-dark .hud-radio.selected .radio-dot{border-color:var(--green)}
+body.theme-dark .hud-radio.selected .radio-dot::after{background:var(--green)}
+body.theme-light .hud-radio{background:var(--radio-bg);border-color:var(--radio-border)}
+body.theme-light .hud-radio:hover{border-color:var(--radio-hover)}
+body.theme-light .hud-radio.selected{border-color:var(--radio-selected-border);background:var(--radio-selected-bg)}
+body.theme-light .hud-radio.selected .radio-dot{border-color:var(--accent)}
+body.theme-light .hud-radio.selected .radio-dot::after{background:var(--accent);box-shadow:0 0 4px rgba(9,132,227,0.4)}
+body.theme-light .hud-radio .radio-label,body.theme-light .hud-radio .radio-sub{color:var(--text)}
+/* Section title theming */
+body.theme-dark .section-title{color:var(--section-color)}
+body.theme-dark .section-title .line{background:linear-gradient(90deg,var(--section-line),transparent)}
+body.theme-light .section-title{color:var(--section-color)}
+body.theme-light .section-title .line{background:linear-gradient(90deg,var(--section-line),transparent)}
+/* Period tabs */
+body.theme-dark .period-tab{border-color:rgba(78,204,163,0.15);color:var(--muted)}
+body.theme-dark .period-tab.active{background:rgba(78,204,163,0.1);color:var(--green);
+  border-color:rgba(78,204,163,0.4);box-shadow:0 0 8px rgba(78,204,163,0.1)}
+body.theme-light .period-tab{border-color:rgba(9,132,227,0.12);color:var(--muted);background:#fff}
+body.theme-light .period-tab.active{background:rgba(9,132,227,0.08);color:var(--accent);
+  border-color:rgba(9,132,227,0.3);box-shadow:none}
+/* Pay chips */
+body.theme-dark .pay-chip{border-color:var(--chip-border);background:var(--chip-bg);color:var(--chip-color)}
+body.theme-light .pay-chip{border-color:var(--chip-border);background:var(--chip-bg);color:var(--chip-color)}
+/* Donut hole */
+body.theme-dark .donut-hole,body.theme-light .donut-hole{background:var(--bg)}
+/* Settings value */
+body.theme-dark .settings-value{color:var(--green)}
+body.theme-light .settings-value{color:var(--accent)}
+/* Settings arrow */
+body.theme-dark .settings-arrow,body.theme-light .settings-arrow{color:var(--muted)}
+/* Account card */
+body.theme-dark .acc-balance{color:var(--green)!important}
+body.theme-light .acc-balance{color:var(--accent)!important}
+body.theme-light .account-add-card{background:#fafafa;border-color:rgba(9,132,227,0.15)}
+body.theme-light .account-add-card:hover{border-color:rgba(9,132,227,0.4);background:rgba(9,132,227,0.03)}
+body.theme-light .account-add-card span{color:var(--accent)}
+body.theme-dark .account-add-card{background:rgba(22,33,62,0.6);border-color:rgba(78,204,163,0.15)}
+body.theme-dark .account-add-card:hover{border-color:rgba(78,204,163,0.4);background:rgba(78,204,163,0.05)}
+body.theme-dark .account-add-card span{color:var(--green)}
+/* Button theming */
+body.theme-dark .btn-save{background:var(--btn-save-bg)!important}
+body.theme-dark .btn-delete{background:var(--btn-delete-bg)!important;color:var(--red)!important}
+body.theme-light .btn-save{background:var(--btn-save-bg)!important;color:#fff}
+body.theme-light .btn-delete{background:var(--btn-delete-bg)!important;color:var(--red)!important}
+body.theme-light .btn-cancel{background:rgba(0,0,0,0.04)!important;color:var(--muted)!important;border-color:rgba(0,0,0,0.08)!important}
+/* Cat add row button */
+body.theme-dark .cat-add-row button{border-color:rgba(78,204,163,0.3);background:rgba(78,204,163,0.1);color:var(--green)}
+body.theme-light .cat-add-row button{border-color:rgba(9,132,227,0.2);background:rgba(9,132,227,0.08);color:var(--accent)}
+/* Spinner */
+body.theme-dark .spinner{border-color:rgba(78,204,163,0.1);border-top-color:var(--green)}
+body.theme-light .spinner{border-color:rgba(9,132,227,0.12);border-top-color:var(--accent)}
+/* Cat list items */
+body.theme-dark .cat-list-item{background:var(--cat-item-bg);border-color:var(--cat-item-border)}
+body.theme-light .cat-list-item{background:var(--cat-item-bg);border-color:var(--cat-item-border)}
+/* Invest type badges (keep same for all themes) */
+/* About rows */
+body.theme-dark .about-row{border-bottom-color:var(--about-border)}
+body.theme-light .about-row{border-bottom-color:var(--about-border)}
+/* Footer */
+body.theme-dark .footer a{color:var(--green)}
+body.theme-light .footer{color:var(--muted)}
+body.theme-light .footer a{color:var(--accent)}
+/* Select option bg */
+body.theme-dark .modal .field select option{background:var(--select-option-bg);color:var(--select-option-color)}
+body.theme-light .modal .field select option{background:var(--select-option-bg);color:var(--select-option-color)}
+/* Scrollbar */
+body.theme-dark .cat-list{scrollbar-color:var(--scroll-thumb) transparent}
+body.theme-dark .cat-list::-webkit-scrollbar-thumb{background:var(--scroll-thumb)}
+body.theme-light .cat-list{scrollbar-color:var(--scroll-thumb) transparent}
+body.theme-light .cat-list::-webkit-scrollbar-thumb{background:var(--scroll-thumb)}
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
   min-height:100vh;overflow-x:hidden;padding-bottom:72px}
@@ -127,7 +453,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 .empty p{color:var(--muted);font-size:13px}
 
 /* Modal */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
+.modal-overlay{position:fixed;inset:0;background:var(--overlay-bg,rgba(0,0,0,0.85));z-index:1000;display:none;align-items:center;justify-content:center;padding:16px}
 .modal-overlay.show{display:flex}
 .modal{background:linear-gradient(135deg,rgba(17,16,8,0.98),rgba(10,8,5,0.99));border:1px solid rgba(102,187,106,0.15);
   border-radius:16px;padding:24px;width:100%;max-width:440px;max-height:90vh;overflow-y:auto;position:relative}
@@ -138,7 +464,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 .modal .field input,.modal .field select{width:100%;padding:10px 12px;background:rgba(255,170,0,0.03);border:1px solid rgba(255,170,0,0.12);border-radius:8px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif}
 .modal .field input:focus,.modal .field select:focus{border-color:var(--green);outline:none;box-shadow:0 0 10px rgba(102,187,106,0.1)}
 .modal .field select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath d='M6 8L1 3h10z' fill='%238a7a5a'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
-.modal .field select option{background:#111;color:#f0e6d0}
+.modal .field select option{background:var(--select-option-bg,#111);color:var(--select-option-color,#f0e6d0)}
 .modal-actions{display:flex;gap:8px;margin-top:18px}
 .modal-actions button{flex:1;padding:12px;border:none;border-radius:8px;font-family:'Orbitron',sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;text-transform:uppercase}
 .btn-save{background:linear-gradient(135deg,rgba(102,187,106,0.8),rgba(46,125,50,0.8));color:#fff}
@@ -383,7 +709,7 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 .invest-type-badge.crypto{background:rgba(255,193,7,0.15);color:var(--gold);border:1px solid rgba(255,193,7,0.3)}
 </style>
 </head>
-<body>
+<body class="theme-hud">
 <div class="hud-bg"><div class="hud-circle c1"></div><div class="hud-circle c2"></div></div>
 <div class="scanline"></div>
 <div class="arc"></div>
@@ -918,7 +1244,7 @@ function renderBalanceChart(transactions) {
   const labelIdxs = [0, Math.floor(points.length/2), points.length-1];
   const labels = labelIdxs.map(i => {
     const d = points[i].date;
-    return `<text x="${x(i).toFixed(1)}" y="${H-1}" fill="#8a7a5a" font-size="8" font-family="Orbitron" text-anchor="middle">${d.slice(5)}</text>`;
+    return `<text x="${x(i).toFixed(1)}" y="${H-1}" fill="var(--muted)" font-size="8" font-family="var(--font-heading,Orbitron)" text-anchor="middle">${d.slice(5)}</text>`;
   }).join('');
 
   return `<div class="chart-card">
@@ -926,13 +1252,13 @@ function renderBalanceChart(transactions) {
     <svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
       <defs>
         <linearGradient id="areaGrad" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="rgba(102,187,106,0.3)"/>
-          <stop offset="100%" stop-color="rgba(102,187,106,0)"/>
+          <stop offset="0%" stop-color="var(--area-grad-start,rgba(102,187,106,0.3))"/>
+          <stop offset="100%" stop-color="var(--area-grad-end,rgba(102,187,106,0))"/>
         </linearGradient>
       </defs>
       <polygon points="${areaPoints}" fill="url(#areaGrad)"/>
-      <polyline points="${linePoints}" fill="none" stroke="#66bb6a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
-      ${points.map((p,i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.val).toFixed(1)}" r="2.5" fill="#66bb6a" stroke="#050507" stroke-width="1"/>`).join('')}
+      <polyline points="${linePoints}" fill="none" stroke="var(--chart-line,#66bb6a)" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      ${points.map((p,i) => `<circle cx="${x(i).toFixed(1)}" cy="${y(p.val).toFixed(1)}" r="2.5" fill="var(--chart-dot,#66bb6a)" stroke="var(--chart-dot-stroke,#050507)" stroke-width="1"/>`).join('')}
       ${labels}
     </svg>
   </div>`;
@@ -1468,9 +1794,12 @@ async function loadSettings() {
     const curDisplay = document.getElementById('settings-currency-display');
     if (curDisplay) curDisplay.textContent = appSettings.default_currency || 'PLN';
     const themeDisplay = document.getElementById('settings-theme-display');
-    if (themeDisplay) themeDisplay.textContent = (appSettings.theme || 'hud').toUpperCase();
+    const names = {hud:'HUD',dark:'DARK',light:'LIGHT'};
+    if (themeDisplay) themeDisplay.textContent = names[appSettings.theme] || (appSettings.theme || 'hud').toUpperCase();
     const notifToggle = document.getElementById('settings-notifications-toggle');
     if (notifToggle) notifToggle.checked = !!appSettings.notifications_enabled;
+    // Apply saved theme
+    applyTheme(appSettings.theme || 'hud');
   } catch(e) { console.error('Settings load error:', e); }
 }
 
@@ -1597,9 +1926,9 @@ function exportData() {
 // ── Theme ──
 function openThemeSettings() {
   const themes = [
-    { id: 'hud', name: 'HUD (Iron Man)', icon: '🦾', active: true },
-    { id: 'dark', name: 'Dark', icon: '🌙', active: false },
-    { id: 'light', name: 'Light', icon: '☀️', active: false }
+    { id: 'hud', name: 'HUD (Iron Man)', icon: '🦾', desc: 'Тёмный HUD стиль а-ля Старк' },
+    { id: 'dark', name: 'Dark', icon: '🌙', desc: 'Тёмная тема, чистый modern UI' },
+    { id: 'light', name: 'Light', icon: '☀️', desc: 'Светлая, минималистичная тема' }
   ];
   const current = appSettings.theme || 'hud';
 
@@ -1607,11 +1936,10 @@ function openThemeSettings() {
   let html = '<div class="hud-radio-group" id="theme-radio-group">';
   themes.forEach(t => {
     const sel = t.id === current ? ' selected' : '';
-    const badge = !t.active && t.id !== 'hud' ? '<span class="radio-badge">СКОРО</span>' : '';
-    html += `<div class="hud-radio${sel}" onclick="selectThemeRadio('${t.id}', ${t.active})">
+    html += `<div class="hud-radio${sel}" onclick="selectThemeRadio('${t.id}')">
       <div class="radio-dot"></div>
       <div class="radio-label">${t.icon} ${t.name}</div>
-      ${badge}
+      <div class="radio-sub">${t.desc}</div>
     </div>`;
   });
   html += '</div>';
@@ -1622,20 +1950,25 @@ function openThemeSettings() {
   openModal('settingsModal');
 }
 
-function selectThemeRadio(id, active) {
-  if (!active && id !== 'hud') return; // disabled themes
+function selectThemeRadio(id) {
   document.querySelectorAll('#theme-radio-group .hud-radio').forEach(r => r.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
   window._selectedTheme = id;
 }
 
+function applyTheme(theme) {
+  document.body.classList.remove('theme-hud','theme-dark','theme-light');
+  document.body.classList.add('theme-' + theme);
+}
+
 async function saveThemeSetting() {
   const theme = window._selectedTheme || appSettings.theme;
-  if (theme !== 'hud') { alert('Пока доступна только тема HUD'); return; }
+  applyTheme(theme);
   const result = await saveSettings({ theme });
   if (result) {
     appSettings.theme = theme;
-    document.getElementById('settings-theme-display').textContent = theme.toUpperCase();
+    const names = {hud:'HUD',dark:'DARK',light:'LIGHT'};
+    document.getElementById('settings-theme-display').textContent = names[theme] || theme.toUpperCase();
     closeModal('settingsModal');
   }
 }
@@ -1680,7 +2013,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 // ═══════════════════════════════════════
 loadDashboard(currentDays);
 loadAccounts();
-loadSettings();
+loadSettings().then(() => { applyTheme(appSettings.theme || 'hud'); });
 updateFab();
 </script>
 </body>
