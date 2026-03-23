@@ -253,10 +253,71 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 /* ═══ SETTINGS TAB ═══ */
 .settings-item{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
   border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:8px;
-  display:flex;align-items:center;gap:12px}
+  display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s;-webkit-tap-highlight-color:transparent}
+.settings-item:hover{border-color:rgba(102,187,106,0.3)}
+.settings-item:active{transform:scale(0.98)}
 .settings-icon{font-size:22px;min-width:30px;text-align:center}
 .settings-label{font-size:13px;font-weight:500;flex:1}
-.settings-arrow{color:var(--muted);font-size:14px}
+.settings-arrow{color:var(--muted);font-size:14px;white-space:nowrap}
+.settings-value{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--green);letter-spacing:1px;margin-right:4px}
+
+/* HUD Toggle Switch */
+.hud-toggle{position:relative;width:48px;height:26px;flex-shrink:0}
+.hud-toggle input{opacity:0;width:0;height:0;position:absolute}
+.hud-toggle .toggle-track{position:absolute;inset:0;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.1);
+  border-radius:13px;transition:all .3s;cursor:pointer}
+.hud-toggle input:checked+.toggle-track{background:rgba(102,187,106,0.2);border-color:rgba(102,187,106,0.5);
+  box-shadow:0 0 10px rgba(102,187,106,0.2)}
+.hud-toggle .toggle-thumb{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;
+  background:#555;transition:all .3s;pointer-events:none}
+.hud-toggle input:checked~.toggle-thumb{left:25px;background:var(--green);box-shadow:0 0 8px rgba(102,187,106,0.5)}
+
+/* HUD Radio Buttons */
+.hud-radio-group{display:flex;flex-direction:column;gap:10px;margin:12px 0}
+.hud-radio{display:flex;align-items:center;gap:12px;padding:12px 14px;background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;transition:all .2s}
+.hud-radio:hover{border-color:rgba(102,187,106,0.2)}
+.hud-radio.selected{border-color:rgba(102,187,106,0.5);background:rgba(102,187,106,0.08);
+  box-shadow:0 0 12px rgba(102,187,106,0.1)}
+.hud-radio .radio-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);
+  position:relative;flex-shrink:0;transition:all .2s}
+.hud-radio.selected .radio-dot{border-color:var(--green)}
+.hud-radio.selected .radio-dot::after{content:'';position:absolute;top:4px;left:4px;width:8px;height:8px;
+  border-radius:50%;background:var(--green);box-shadow:0 0 6px rgba(102,187,106,0.6)}
+.hud-radio .radio-label{font-size:14px;font-weight:500;flex:1}
+.hud-radio .radio-sub{font-size:10px;color:var(--muted)}
+.hud-radio .radio-badge{font-family:'Orbitron',sans-serif;font-size:8px;padding:2px 8px;border-radius:8px;
+  background:rgba(255,193,7,0.15);color:var(--gold);border:1px solid rgba(255,193,7,0.3);letter-spacing:1px}
+
+/* Categories List */
+.cat-list{max-height:300px;overflow-y:auto;margin:12px 0;scrollbar-width:thin;scrollbar-color:var(--green-dim) transparent}
+.cat-list::-webkit-scrollbar{width:4px}
+.cat-list::-webkit-scrollbar-thumb{background:var(--green-dim);border-radius:2px}
+.cat-list-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);border-radius:8px;margin-bottom:6px}
+.cat-list-item .cat-list-name{flex:1;font-size:13px}
+.cat-list-item .cat-list-delete{background:none;border:none;color:var(--red);font-size:18px;cursor:pointer;
+  padding:0 4px;opacity:0.6;transition:opacity .2s}
+.cat-list-item .cat-list-delete:hover{opacity:1}
+.cat-add-row{display:flex;gap:8px;margin-top:12px}
+.cat-add-row input{flex:1;padding:10px 12px;background:rgba(255,170,0,0.03);border:1px solid rgba(255,170,0,0.12);
+  border-radius:8px;color:var(--text);font-size:13px;font-family:'Inter',sans-serif}
+.cat-add-row input:focus{border-color:var(--green);outline:none;box-shadow:0 0 10px rgba(102,187,106,0.1)}
+.cat-add-row button{width:44px;height:44px;border-radius:8px;border:1px solid rgba(102,187,106,0.3);
+  background:rgba(102,187,106,0.1);color:var(--green);font-size:20px;cursor:pointer;transition:all .2s;flex-shrink:0}
+.cat-add-row button:hover{background:rgba(102,187,106,0.2);box-shadow:0 0 10px rgba(102,187,106,0.2)}
+
+/* About Info */
+.about-grid{margin:16px 0}
+.about-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.about-row:last-child{border-bottom:none}
+.about-key{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+.about-val{font-size:13px;color:var(--text);text-align:right}
+.about-logo{text-align:center;margin:20px 0 10px;font-size:48px}
+.about-title{text-align:center;font-family:'Orbitron',sans-serif;font-size:18px;font-weight:800;
+  background:linear-gradient(135deg,#81c784,#66bb6a,#2e7d32);-webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 12px rgba(102,187,106,0.3));margin-bottom:4px}
+.about-subtitle{text-align:center;font-family:'Orbitron',sans-serif;font-size:8px;color:var(--muted);letter-spacing:2px;margin-bottom:20px}
 
 /* Footer */
 .footer{text-align:center;padding:20px;font-size:10px;color:var(--muted)}
@@ -395,14 +456,53 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
   <div id="tab-more" class="tab-content">
     <div class="cat-section">
       <div class="section-title">⚙️ НАСТРОЙКИ <div class="line"></div></div>
-      <div class="settings-item"><div class="settings-icon">💱</div><div class="settings-label">Валюта по умолчанию</div><div class="settings-arrow">PLN ›</div></div>
-      <div class="settings-item"><div class="settings-icon">📊</div><div class="settings-label">Категории</div><div class="settings-arrow">›</div></div>
-      <div class="settings-item"><div class="settings-icon">🔔</div><div class="settings-label">Уведомления</div><div class="settings-arrow">›</div></div>
-      <div class="settings-item"><div class="settings-icon">📤</div><div class="settings-label">Экспорт данных</div><div class="settings-arrow">›</div></div>
-      <div class="settings-item"><div class="settings-icon">🎨</div><div class="settings-label">Тема оформления</div><div class="settings-arrow">HUD ›</div></div>
-      <div class="settings-item"><div class="settings-icon">ℹ️</div><div class="settings-label">О приложении</div><div class="settings-arrow">v1.0 ›</div></div>
+      <div class="settings-item" onclick="openCurrencySettings()">
+        <div class="settings-icon">💱</div>
+        <div class="settings-label">Валюта по умолчанию</div>
+        <span class="settings-value" id="settings-currency-display">PLN</span>
+        <div class="settings-arrow">›</div>
+      </div>
+      <div class="settings-item" onclick="openCategoriesSettings()">
+        <div class="settings-icon">📊</div>
+        <div class="settings-label">Категории</div>
+        <div class="settings-arrow">›</div>
+      </div>
+      <div class="settings-item" style="cursor:default" onclick="event.stopPropagation()">
+        <div class="settings-icon">🔔</div>
+        <div class="settings-label">Уведомления</div>
+        <label class="hud-toggle">
+          <input type="checkbox" id="settings-notifications-toggle" onchange="toggleNotifications(this.checked)">
+          <span class="toggle-track"></span>
+          <span class="toggle-thumb"></span>
+        </label>
+      </div>
+      <div class="settings-item" onclick="exportData()">
+        <div class="settings-icon">📤</div>
+        <div class="settings-label">Экспорт данных</div>
+        <div class="settings-arrow">CSV ›</div>
+      </div>
+      <div class="settings-item" onclick="openThemeSettings()">
+        <div class="settings-icon">🎨</div>
+        <div class="settings-label">Тема оформления</div>
+        <span class="settings-value" id="settings-theme-display">HUD</span>
+        <div class="settings-arrow">›</div>
+      </div>
+      <div class="settings-item" onclick="openAboutModal()">
+        <div class="settings-icon">ℹ️</div>
+        <div class="settings-label">О приложении</div>
+        <div class="settings-arrow">v2.0 ›</div>
+      </div>
     </div>
     <div class="footer">Powered by <a href="#">A.U.R.U.M.</a> ⚡ Stark Industries Style</div>
+  </div>
+</div>
+
+<!-- ═══ SETTINGS MODAL (reusable) ═══ -->
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h2 id="settings-modal-title">⚙️ НАСТРОЙКИ</h2>
+    <div id="settings-modal-body"></div>
+    <div class="modal-actions" id="settings-modal-actions"></div>
   </div>
 </div>
 
@@ -623,6 +723,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     if (btn.dataset.tab === 'tab-planning') loadBudgets();
     if (btn.dataset.tab === 'tab-stats') loadStats();
     if (btn.dataset.tab === 'tab-invest') loadInvestments();
+    if (btn.dataset.tab === 'tab-more') loadSettings();
   });
 });
 
@@ -844,7 +945,7 @@ function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
 // Close on backdrop click
-['editModal','addModal','accountModal','investAddModal','investEditModal'].forEach(id => {
+['editModal','addModal','accountModal','investAddModal','investEditModal','settingsModal'].forEach(id => {
   document.getElementById(id).addEventListener('click', function(e) { if(e.target===this) closeModal(id); });
 });
 
@@ -1354,6 +1455,210 @@ async function deleteInvestment() {
 }
 
 // ═══════════════════════════════════════
+//  SETTINGS (Ещё tab)
+// ═══════════════════════════════════════
+let appSettings = { default_currency: 'PLN', categories: [], notifications_enabled: 0, theme: 'hud' };
+
+async function loadSettings() {
+  try {
+    const resp = await fetch(`${API_BASE}/api/settings`);
+    const data = await resp.json();
+    if (data) appSettings = { ...appSettings, ...data };
+    // Update UI
+    const curDisplay = document.getElementById('settings-currency-display');
+    if (curDisplay) curDisplay.textContent = appSettings.default_currency || 'PLN';
+    const themeDisplay = document.getElementById('settings-theme-display');
+    if (themeDisplay) themeDisplay.textContent = (appSettings.theme || 'hud').toUpperCase();
+    const notifToggle = document.getElementById('settings-notifications-toggle');
+    if (notifToggle) notifToggle.checked = !!appSettings.notifications_enabled;
+  } catch(e) { console.error('Settings load error:', e); }
+}
+
+async function saveSettings(partial) {
+  try {
+    const resp = await fetch(`${API_BASE}/api/settings`, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(partial)
+    });
+    return await resp.json();
+  } catch(e) { alert('Ошибка сохранения: ' + e.message); return null; }
+}
+
+// ── Currency ──
+function openCurrencySettings() {
+  const currencies = ['PLN', 'EUR', 'USD', 'UAH'];
+  const flags = { PLN: '🇵🇱', EUR: '🇪🇺', USD: '🇺🇸', UAH: '🇺🇦' };
+  const names = { PLN: 'Польский злотый', EUR: 'Евро', USD: 'Доллар США', UAH: 'Гривна' };
+  const current = appSettings.default_currency || 'PLN';
+
+  document.getElementById('settings-modal-title').textContent = '💱 ВАЛЮТА';
+  let html = '<div class="hud-radio-group" id="currency-radio-group">';
+  currencies.forEach(cur => {
+    const sel = cur === current ? ' selected' : '';
+    html += `<div class="hud-radio${sel}" onclick="selectCurrencyRadio('${cur}')">
+      <div class="radio-dot"></div>
+      <div class="radio-label">${flags[cur]} ${cur}</div>
+      <div class="radio-sub">${names[cur]}</div>
+    </div>`;
+  });
+  html += '</div>';
+  document.getElementById('settings-modal-body').innerHTML = html;
+  document.getElementById('settings-modal-actions').innerHTML = `
+    <button class="btn-save" onclick="saveCurrencySetting()">💾 Сохранить</button>
+    <button class="btn-cancel" onclick="closeModal('settingsModal')">✖ Закрыть</button>`;
+  openModal('settingsModal');
+}
+
+function selectCurrencyRadio(cur) {
+  document.querySelectorAll('#currency-radio-group .hud-radio').forEach(r => r.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  window._selectedCurrency = cur;
+}
+
+async function saveCurrencySetting() {
+  const cur = window._selectedCurrency || appSettings.default_currency;
+  const result = await saveSettings({ default_currency: cur });
+  if (result) {
+    appSettings.default_currency = cur;
+    document.getElementById('settings-currency-display').textContent = cur;
+    closeModal('settingsModal');
+  }
+}
+
+// ── Categories ──
+function openCategoriesSettings() {
+  document.getElementById('settings-modal-title').textContent = '📊 КАТЕГОРИИ';
+  renderCategoriesList();
+  document.getElementById('settings-modal-actions').innerHTML = `
+    <button class="btn-cancel" onclick="closeModal('settingsModal')">✖ Закрыть</button>`;
+  openModal('settingsModal');
+}
+
+function renderCategoriesList() {
+  const cats = appSettings.categories || [];
+  let html = '<div class="cat-list">';
+  cats.forEach((cat, i) => {
+    html += `<div class="cat-list-item">
+      <div class="cat-list-name">${cat}</div>
+      <button class="cat-list-delete" onclick="removeCategory(${i})" title="Удалить">✕</button>
+    </div>`;
+  });
+  if (cats.length === 0) {
+    html += '<div style="text-align:center;padding:20px;color:var(--muted);font-size:12px">Нет категорий</div>';
+  }
+  html += '</div>';
+  html += `<div class="cat-add-row">
+    <input type="text" id="new-category-input" placeholder="Новая категория..." onkeydown="if(event.key==='Enter')addCategory()">
+    <button onclick="addCategory()">➕</button>
+  </div>`;
+  document.getElementById('settings-modal-body').innerHTML = html;
+}
+
+async function addCategory() {
+  const input = document.getElementById('new-category-input');
+  const name = input.value.trim();
+  if (!name) return;
+  if (!appSettings.categories) appSettings.categories = [];
+  appSettings.categories.push(name);
+  const result = await saveSettings({ categories: appSettings.categories });
+  if (result) {
+    renderCategoriesList();
+  } else {
+    appSettings.categories.pop(); // rollback
+  }
+}
+
+async function removeCategory(idx) {
+  const removed = appSettings.categories.splice(idx, 1);
+  const result = await saveSettings({ categories: appSettings.categories });
+  if (result) {
+    renderCategoriesList();
+  } else {
+    appSettings.categories.splice(idx, 0, removed[0]); // rollback
+  }
+}
+
+// ── Notifications ──
+async function toggleNotifications(enabled) {
+  const val = enabled ? 1 : 0;
+  const result = await saveSettings({ notifications_enabled: val });
+  if (result) {
+    appSettings.notifications_enabled = val;
+  } else {
+    // rollback
+    document.getElementById('settings-notifications-toggle').checked = !enabled;
+  }
+}
+
+// ── Export ──
+function exportData() {
+  window.open(`${API_BASE}/api/export?days=365`, '_blank');
+}
+
+// ── Theme ──
+function openThemeSettings() {
+  const themes = [
+    { id: 'hud', name: 'HUD (Iron Man)', icon: '🦾', active: true },
+    { id: 'dark', name: 'Dark', icon: '🌙', active: false },
+    { id: 'light', name: 'Light', icon: '☀️', active: false }
+  ];
+  const current = appSettings.theme || 'hud';
+
+  document.getElementById('settings-modal-title').textContent = '🎨 ТЕМА';
+  let html = '<div class="hud-radio-group" id="theme-radio-group">';
+  themes.forEach(t => {
+    const sel = t.id === current ? ' selected' : '';
+    const badge = !t.active && t.id !== 'hud' ? '<span class="radio-badge">СКОРО</span>' : '';
+    html += `<div class="hud-radio${sel}" onclick="selectThemeRadio('${t.id}', ${t.active})">
+      <div class="radio-dot"></div>
+      <div class="radio-label">${t.icon} ${t.name}</div>
+      ${badge}
+    </div>`;
+  });
+  html += '</div>';
+  document.getElementById('settings-modal-body').innerHTML = html;
+  document.getElementById('settings-modal-actions').innerHTML = `
+    <button class="btn-save" onclick="saveThemeSetting()">💾 Сохранить</button>
+    <button class="btn-cancel" onclick="closeModal('settingsModal')">✖ Закрыть</button>`;
+  openModal('settingsModal');
+}
+
+function selectThemeRadio(id, active) {
+  if (!active && id !== 'hud') return; // disabled themes
+  document.querySelectorAll('#theme-radio-group .hud-radio').forEach(r => r.classList.remove('selected'));
+  event.currentTarget.classList.add('selected');
+  window._selectedTheme = id;
+}
+
+async function saveThemeSetting() {
+  const theme = window._selectedTheme || appSettings.theme;
+  if (theme !== 'hud') { alert('Пока доступна только тема HUD'); return; }
+  const result = await saveSettings({ theme });
+  if (result) {
+    appSettings.theme = theme;
+    document.getElementById('settings-theme-display').textContent = theme.toUpperCase();
+    closeModal('settingsModal');
+  }
+}
+
+// ── About ──
+function openAboutModal() {
+  document.getElementById('settings-modal-title').textContent = '';
+  document.getElementById('settings-modal-body').innerHTML = `
+    <div class="about-logo">💰</div>
+    <div class="about-title">A.U.R.U.M.</div>
+    <div class="about-subtitle">Automated Universal Resource & Utility Manager</div>
+    <div class="about-grid">
+      <div class="about-row"><span class="about-key">Версия</span><span class="about-val">2.0</span></div>
+      <div class="about-row"><span class="about-key">Разработчик</span><span class="about-val">A.R.C.H.O.N. × Серго</span></div>
+      <div class="about-row"><span class="about-key">Стек</span><span class="about-val">SQLite + Python + Telegram WebApp</span></div>
+      <div class="about-row"><span class="about-key">Стиль</span><span class="about-val">Iron Man HUD</span></div>
+    </div>`;
+  document.getElementById('settings-modal-actions').innerHTML = `
+    <button class="btn-cancel" onclick="closeModal('settingsModal')">✖ Закрыть</button>`;
+  openModal('settingsModal');
+}
+
+// ═══════════════════════════════════════
 //  FAB CONTEXT — show different action per tab
 // ═══════════════════════════════════════
 function updateFab() {
@@ -1375,6 +1680,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
 // ═══════════════════════════════════════
 loadDashboard(currentDays);
 loadAccounts();
+loadSettings();
 updateFab();
 </script>
 </body>
