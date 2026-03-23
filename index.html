@@ -261,6 +261,65 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
 /* Footer */
 .footer{text-align:center;padding:20px;font-size:10px;color:var(--muted)}
 .footer a{color:var(--green);text-decoration:none}
+
+/* ═══ ACCOUNTS CAROUSEL ═══ */
+.accounts-carousel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;padding:4px 2px 10px;margin:8px 0 4px;scrollbar-width:none}
+.accounts-carousel::-webkit-scrollbar{display:none}
+.account-card{flex:0 0 140px;scroll-snap-align:start;background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:14px;padding:14px 12px;position:relative;
+  cursor:pointer;transition:all .2s;overflow:hidden}
+.account-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--green),transparent);opacity:.5}
+.account-card:hover{border-color:rgba(102,187,106,0.3);box-shadow:0 0 15px rgba(102,187,106,0.1)}
+.account-card .acc-icon{font-size:24px;margin-bottom:6px}
+.account-card .acc-name{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--muted);letter-spacing:1px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px}
+.account-card .acc-balance{font-family:'Orbitron',sans-serif;font-size:15px;font-weight:700;color:var(--green)}
+.account-card .acc-currency{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--muted);margin-top:2px}
+.account-card .acc-delete{position:absolute;top:6px;right:8px;background:none;border:none;color:var(--muted);
+  font-size:12px;cursor:pointer;opacity:0;transition:opacity .2s;padding:2px}
+.account-card:hover .acc-delete{opacity:1}
+.account-add-card{flex:0 0 70px;scroll-snap-align:start;background:rgba(17,16,8,0.6);
+  border:1px dashed rgba(102,187,106,0.2);border-radius:14px;display:flex;align-items:center;
+  justify-content:center;cursor:pointer;transition:all .2s;min-height:100px}
+.account-add-card:hover{border-color:rgba(102,187,106,0.5);background:rgba(102,187,106,0.05)}
+.account-add-card span{font-size:28px;color:var(--green);opacity:.6}
+
+/* ═══ INVESTMENTS TAB ═══ */
+.invest-portfolio{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid rgba(102,187,106,0.1);border-radius:16px;padding:20px;margin:12px 0;
+  position:relative;overflow:hidden;text-align:center}
+.invest-portfolio::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--gold),transparent)}
+.invest-portfolio .port-label{font-family:'Orbitron',sans-serif;font-size:9px;color:var(--muted);letter-spacing:2px;margin-bottom:8px}
+.invest-portfolio .port-value{font-family:'Orbitron',sans-serif;font-size:26px;font-weight:800}
+.invest-portfolio .port-row{display:flex;gap:12px;justify-content:center;margin-top:12px}
+.invest-portfolio .port-stat{text-align:center}
+.invest-portfolio .port-stat-label{font-family:'Orbitron',sans-serif;font-size:7px;color:var(--muted);letter-spacing:1px}
+.invest-portfolio .port-stat-val{font-family:'Orbitron',sans-serif;font-size:14px;font-weight:700;margin-top:2px}
+
+.invest-card{background:linear-gradient(135deg,rgba(17,16,8,0.95),rgba(10,8,5,0.98));
+  border:1px solid var(--border);border-radius:12px;padding:12px 14px;margin-bottom:8px;
+  display:flex;align-items:center;gap:12px;cursor:pointer;transition:all .2s}
+.invest-card:hover{border-color:rgba(102,187,106,0.3)}
+.invest-card.profit-up{box-shadow:0 0 8px rgba(102,187,106,0.08)}
+.invest-card.profit-down{box-shadow:0 0 8px rgba(229,57,53,0.08)}
+.invest-card .inv-icon{font-size:22px;min-width:30px;text-align:center}
+.invest-card .inv-info{flex:1;min-width:0}
+.invest-card .inv-symbol{font-family:'Orbitron',sans-serif;font-size:12px;font-weight:700;letter-spacing:1px}
+.invest-card .inv-name{font-size:10px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.invest-card .inv-qty{font-size:9px;color:var(--muted);margin-top:2px}
+.invest-card .inv-right{text-align:right}
+.invest-card .inv-price{font-family:'Orbitron',sans-serif;font-size:13px;font-weight:700}
+.invest-card .inv-profit{font-family:'Orbitron',sans-serif;font-size:10px;font-weight:600;margin-top:2px}
+.invest-card .inv-profit.up{color:var(--green)}
+.invest-card .inv-profit.down{color:var(--red)}
+.invest-type-badge{font-family:'Orbitron',sans-serif;font-size:7px;padding:2px 6px;border-radius:8px;
+  letter-spacing:0.5px;display:inline-block;margin-top:3px}
+.invest-type-badge.stock{background:rgba(66,165,245,0.15);color:#42a5f5;border:1px solid rgba(66,165,245,0.3)}
+.invest-type-badge.etf{background:rgba(171,71,188,0.15);color:#ab47bc;border:1px solid rgba(171,71,188,0.3)}
+.invest-type-badge.crypto{background:rgba(255,193,7,0.15);color:var(--gold);border:1px solid rgba(255,193,7,0.3)}
 </style>
 </head>
 <body>
@@ -283,6 +342,14 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
       <button class="period-tab" data-days="90">3 месяца</button>
       <button class="period-tab" data-days="365">Год</button>
     </div>
+    <!-- Accounts Carousel -->
+    <div class="cat-section">
+      <div class="section-title">🏦 СЧЕТА <div class="line"></div></div>
+      <div class="accounts-carousel" id="accounts-carousel">
+        <div class="loading" style="width:100%"><div class="spinner"></div><p>ЗАГРУЗКА СЧЕТОВ...</p></div>
+      </div>
+    </div>
+
     <div id="dashboard">
       <div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА ДАННЫХ...</p></div>
     </div>
@@ -317,6 +384,13 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
     </div>
   </div>
 
+  <!-- ═══ TAB: ИНВЕСТИЦИИ ═══ -->
+  <div id="tab-invest" class="tab-content">
+    <div id="invest-content">
+      <div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА ИНВЕСТИЦИЙ...</p></div>
+    </div>
+  </div>
+
   <!-- ═══ TAB: ЕЩЁ ═══ -->
   <div id="tab-more" class="tab-content">
     <div class="cat-section">
@@ -344,7 +418,10 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
     <span class="nav-icon">📅</span><span class="nav-label">План</span>
   </button>
   <button class="nav-item" data-tab="tab-stats">
-    <span class="nav-icon">📈</span><span class="nav-label">Статистика</span>
+    <span class="nav-icon">📈</span><span class="nav-label">Стат</span>
+  </button>
+  <button class="nav-item" data-tab="tab-invest">
+    <span class="nav-icon">💹</span><span class="nav-label">Инвест</span>
   </button>
   <button class="nav-item" data-tab="tab-more">
     <span class="nav-icon">⚙️</span><span class="nav-label">Ещё</span>
@@ -439,6 +516,89 @@ body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
   </div>
 </div>
 
+<!-- ═══ ADD ACCOUNT MODAL ═══ -->
+<div class="modal-overlay" id="accountModal">
+  <div class="modal">
+    <h2>🏦 НОВЫЙ СЧЁТ</h2>
+    <div class="field"><label>Название</label><input id="acc-name" type="text" placeholder="Мой кошелёк"></div>
+    <div class="field"><label>Тип</label>
+      <select id="acc-type">
+        <option value="cash">💵 Наличные</option><option value="card">💳 Карта</option>
+        <option value="bank">🏦 Банк</option><option value="savings">🐷 Сбережения</option>
+      </select>
+    </div>
+    <div class="field"><label>Валюта</label>
+      <select id="acc-currency">
+        <option value="PLN">PLN</option><option value="EUR">EUR</option>
+        <option value="USD">USD</option><option value="UAH">UAH</option>
+      </select>
+    </div>
+    <div class="field"><label>Баланс</label><input id="acc-balance" type="number" step="0.01" placeholder="0.00"></div>
+    <div class="field"><label>Иконка (эмодзи)</label><input id="acc-icon" type="text" placeholder="💰" maxlength="4"></div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="createAccount()">💾 Создать</button>
+      <button class="btn-cancel" onclick="closeModal('accountModal')">✖ Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ ADD INVESTMENT MODAL ═══ -->
+<div class="modal-overlay" id="investAddModal">
+  <div class="modal">
+    <h2>💹 НОВАЯ ИНВЕСТИЦИЯ</h2>
+    <div class="field"><label>Символ (тикер)</label><input id="inv-add-symbol" type="text" placeholder="AAPL"></div>
+    <div class="field"><label>Название</label><input id="inv-add-name" type="text" placeholder="Apple Inc."></div>
+    <div class="field"><label>Тип</label>
+      <select id="inv-add-type">
+        <option value="stock">📊 Акция</option><option value="etf">📈 ETF</option><option value="crypto">₿ Крипто</option>
+      </select>
+    </div>
+    <div class="field"><label>Количество</label><input id="inv-add-qty" type="number" step="0.0001" placeholder="0"></div>
+    <div class="field"><label>Цена покупки</label><input id="inv-add-price" type="number" step="0.01" placeholder="0.00"></div>
+    <div class="field"><label>Дата покупки</label><input id="inv-add-date" type="date"></div>
+    <div class="field"><label>Валюта</label>
+      <select id="inv-add-currency">
+        <option value="USD">USD</option><option value="EUR">EUR</option>
+        <option value="PLN">PLN</option><option value="UAH">UAH</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="createInvestment()">💾 Добавить</button>
+      <button class="btn-cancel" onclick="closeModal('investAddModal')">✖ Отмена</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EDIT INVESTMENT MODAL ═══ -->
+<div class="modal-overlay" id="investEditModal">
+  <div class="modal">
+    <h2>✏️ РЕДАКТИРОВАТЬ ИНВЕСТИЦИЮ</h2>
+    <input type="hidden" id="inv-edit-id">
+    <div class="field"><label>Символ (тикер)</label><input id="inv-edit-symbol" type="text"></div>
+    <div class="field"><label>Название</label><input id="inv-edit-name" type="text"></div>
+    <div class="field"><label>Тип</label>
+      <select id="inv-edit-type">
+        <option value="stock">📊 Акция</option><option value="etf">📈 ETF</option><option value="crypto">₿ Крипто</option>
+      </select>
+    </div>
+    <div class="field"><label>Количество</label><input id="inv-edit-qty" type="number" step="0.0001"></div>
+    <div class="field"><label>Цена покупки</label><input id="inv-edit-price" type="number" step="0.01"></div>
+    <div class="field"><label>Текущая цена</label><input id="inv-edit-current" type="number" step="0.01"></div>
+    <div class="field"><label>Дата покупки</label><input id="inv-edit-date" type="date"></div>
+    <div class="field"><label>Валюта</label>
+      <select id="inv-edit-currency">
+        <option value="USD">USD</option><option value="EUR">EUR</option>
+        <option value="PLN">PLN</option><option value="UAH">UAH</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-save" onclick="saveInvestment()">💾 Сохранить</button>
+      <button class="btn-cancel" onclick="closeModal('investEditModal')">✖ Отмена</button>
+      <button class="btn-delete" onclick="deleteInvestment()">🗑 Удалить</button>
+    </div>
+  </div>
+</div>
+
 <script>
 let tg;
 try { tg = window.Telegram && Telegram.WebApp; if(tg) tg.ready(); } catch(e) {}
@@ -462,6 +622,7 @@ document.querySelectorAll('.nav-item').forEach(btn => {
     // Load tab data
     if (btn.dataset.tab === 'tab-planning') loadBudgets();
     if (btn.dataset.tab === 'tab-stats') loadStats();
+    if (btn.dataset.tab === 'tab-invest') loadInvestments();
   });
 });
 
@@ -683,7 +844,7 @@ function openModal(id) { document.getElementById(id).classList.add('show'); }
 function closeModal(id) { document.getElementById(id).classList.remove('show'); }
 
 // Close on backdrop click
-['editModal','addModal'].forEach(id => {
+['editModal','addModal','accountModal','investAddModal','investEditModal'].forEach(id => {
   document.getElementById(id).addEventListener('click', function(e) { if(e.target===this) closeModal(id); });
 });
 
@@ -971,9 +1132,250 @@ async function loadStats() {
 }
 
 // ═══════════════════════════════════════
+//  ACCOUNTS CAROUSEL
+// ═══════════════════════════════════════
+async function loadAccounts() {
+  const el = document.getElementById('accounts-carousel');
+  try {
+    const resp = await fetch(`${API_BASE}/api/accounts`);
+    const accounts = await resp.json();
+    let html = '';
+    if (Array.isArray(accounts)) {
+      accounts.forEach(acc => {
+        html += `<div class="account-card" title="${acc.name}">
+          <button class="acc-delete" onclick="event.stopPropagation();deleteAccount('${acc.id}')" title="Удалить">✕</button>
+          <div class="acc-icon">${acc.icon || '💰'}</div>
+          <div class="acc-name">${acc.name}</div>
+          <div class="acc-balance">${fmt(acc.balance)}</div>
+          <div class="acc-currency">${acc.currency || 'PLN'}</div>
+        </div>`;
+      });
+    }
+    html += `<div class="account-add-card" onclick="openModal('accountModal')"><span>+</span></div>`;
+    el.innerHTML = html;
+  } catch(e) {
+    el.innerHTML = `<div class="account-add-card" onclick="openModal('accountModal')"><span>+</span></div>`;
+  }
+}
+
+async function createAccount() {
+  const name = document.getElementById('acc-name').value.trim();
+  if (!name) { alert('Введите название счёта'); return; }
+  const data = {
+    name,
+    type: document.getElementById('acc-type').value,
+    currency: document.getElementById('acc-currency').value,
+    balance: parseFloat(document.getElementById('acc-balance').value) || 0,
+    icon: document.getElementById('acc-icon').value || '💰'
+  };
+  try {
+    const resp = await fetch(`${API_BASE}/api/accounts`, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    if (result.ok || result.id) { closeModal('accountModal'); loadAccounts(); }
+    else alert('Ошибка: ' + JSON.stringify(result));
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+async function deleteAccount(id) {
+  if (!confirm('Удалить счёт?')) return;
+  try {
+    await fetch(`${API_BASE}/api/accounts/${id}`, {method: 'DELETE'});
+    loadAccounts();
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+// ═══════════════════════════════════════
+//  INVESTMENTS TAB
+// ═══════════════════════════════════════
+let investmentsData = [];
+
+function investIcon(type) {
+  return type === 'crypto' ? '₿' : type === 'etf' ? '📈' : '📊';
+}
+
+async function loadInvestments() {
+  const el = document.getElementById('invest-content');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div><p>ЗАГРУЗКА ИНВЕСТИЦИЙ...</p></div>';
+  try {
+    const resp = await fetch(`${API_BASE}/api/investments`);
+    const data = await resp.json();
+    investmentsData = data.investments || [];
+    renderInvestments(data);
+  } catch(e) {
+    el.innerHTML = `<div class="empty"><div class="icon">⚠️</div><p>Ошибка: ${e.message}</p></div>`;
+  }
+}
+
+function renderInvestments(data) {
+  const el = document.getElementById('invest-content');
+  const totalInvested = data.total_invested || 0;
+  const totalCurrent = data.total_current || 0;
+  const totalProfit = data.total_profit || 0;
+  const profitPct = data.profit_pct || 0;
+  const profitColor = totalProfit >= 0 ? 'var(--green)' : 'var(--red)';
+  const profitSign = totalProfit >= 0 ? '+' : '';
+
+  let html = `
+    <div class="invest-portfolio">
+      <div class="port-label">ПОРТФЕЛЬ</div>
+      <div class="port-value" style="color:${profitColor}">${profitSign}${fmt(totalProfit)}</div>
+      <div class="port-row">
+        <div class="port-stat">
+          <div class="port-stat-label">ВЛОЖЕНО</div>
+          <div class="port-stat-val" style="color:var(--text)">${fmt(totalInvested)}</div>
+        </div>
+        <div class="port-stat">
+          <div class="port-stat-label">ТЕКУЩАЯ</div>
+          <div class="port-stat-val" style="color:var(--cyan)">${fmt(totalCurrent)}</div>
+        </div>
+        <div class="port-stat">
+          <div class="port-stat-label">ПРИБЫЛЬ</div>
+          <div class="port-stat-val" style="color:${profitColor}">${profitSign}${profitPct.toFixed(1)}%</div>
+        </div>
+      </div>
+    </div>`;
+
+  const investments = data.investments || [];
+  if (investments.length === 0) {
+    html += `<div class="empty"><div class="icon">💹</div><p>Инвестиций пока нет.<br>Нажми + чтобы добавить!</p></div>`;
+  } else {
+    html += `<div class="cat-section"><div class="section-title">💹 ИНВЕСТИЦИИ <div class="line"></div></div>`;
+    investments.forEach((inv, i) => {
+      const profit = ((inv.current_price || inv.buy_price) - inv.buy_price) * inv.quantity;
+      const profitPctItem = inv.buy_price > 0 ? ((inv.current_price || inv.buy_price) / inv.buy_price - 1) * 100 : 0;
+      const isUp = profit >= 0;
+      const cls = isUp ? 'profit-up' : 'profit-down';
+      const pSign = isUp ? '+' : '';
+      const pClass = isUp ? 'up' : 'down';
+      html += `<div class="invest-card ${cls}" onclick="openInvestEdit(${i})">
+        <div class="inv-icon">${investIcon(inv.type)}</div>
+        <div class="inv-info">
+          <div class="inv-symbol">${inv.symbol || '—'}</div>
+          <div class="inv-name">${inv.name || ''}</div>
+          <div class="inv-qty">${inv.quantity} шт. × ${fmt(inv.buy_price)} ${inv.currency || 'USD'}</div>
+          <span class="invest-type-badge ${inv.type || 'stock'}">${(inv.type || 'stock').toUpperCase()}</span>
+        </div>
+        <div class="inv-right">
+          <div class="inv-price" style="color:var(--text)">${fmt((inv.current_price || inv.buy_price) * inv.quantity)}</div>
+          <div class="inv-profit ${pClass}">${pSign}${fmt(profit)} (${pSign}${profitPctItem.toFixed(1)}%)</div>
+        </div>
+      </div>`;
+    });
+    html += '</div>';
+  }
+
+  el.innerHTML = html;
+}
+
+function openInvestAdd() {
+  document.getElementById('inv-add-symbol').value = '';
+  document.getElementById('inv-add-name').value = '';
+  document.getElementById('inv-add-type').value = 'stock';
+  document.getElementById('inv-add-qty').value = '';
+  document.getElementById('inv-add-price').value = '';
+  document.getElementById('inv-add-date').value = todayStr();
+  document.getElementById('inv-add-currency').value = 'USD';
+  openModal('investAddModal');
+}
+
+async function createInvestment() {
+  const symbol = document.getElementById('inv-add-symbol').value.trim();
+  const qty = parseFloat(document.getElementById('inv-add-qty').value);
+  const price = parseFloat(document.getElementById('inv-add-price').value);
+  if (!symbol) { alert('Введите символ'); return; }
+  if (!qty || qty <= 0) { alert('Введите количество'); return; }
+  if (!price || price <= 0) { alert('Введите цену покупки'); return; }
+  const data = {
+    symbol,
+    name: document.getElementById('inv-add-name').value.trim(),
+    type: document.getElementById('inv-add-type').value,
+    quantity: qty,
+    buy_price: price,
+    date: document.getElementById('inv-add-date').value,
+    currency: document.getElementById('inv-add-currency').value
+  };
+  try {
+    const resp = await fetch(`${API_BASE}/api/investments`, {
+      method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    if (result.ok || result.id) { closeModal('investAddModal'); loadInvestments(); }
+    else alert('Ошибка: ' + JSON.stringify(result));
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+function openInvestEdit(idx) {
+  const inv = investmentsData[idx];
+  if (!inv) return;
+  document.getElementById('inv-edit-id').value = inv.id;
+  document.getElementById('inv-edit-symbol').value = inv.symbol || '';
+  document.getElementById('inv-edit-name').value = inv.name || '';
+  document.getElementById('inv-edit-type').value = inv.type || 'stock';
+  document.getElementById('inv-edit-qty').value = inv.quantity || 0;
+  document.getElementById('inv-edit-price').value = inv.buy_price || 0;
+  document.getElementById('inv-edit-current').value = inv.current_price || inv.buy_price || 0;
+  document.getElementById('inv-edit-date').value = inv.date || '';
+  document.getElementById('inv-edit-currency').value = inv.currency || 'USD';
+  openModal('investEditModal');
+}
+
+async function saveInvestment() {
+  const id = document.getElementById('inv-edit-id').value;
+  const data = {
+    symbol: document.getElementById('inv-edit-symbol').value.trim(),
+    name: document.getElementById('inv-edit-name').value.trim(),
+    type: document.getElementById('inv-edit-type').value,
+    quantity: parseFloat(document.getElementById('inv-edit-qty').value),
+    buy_price: parseFloat(document.getElementById('inv-edit-price').value),
+    current_price: parseFloat(document.getElementById('inv-edit-current').value),
+    date: document.getElementById('inv-edit-date').value,
+    currency: document.getElementById('inv-edit-currency').value
+  };
+  try {
+    const resp = await fetch(`${API_BASE}/api/investments/${id}`, {
+      method: 'PUT', headers: {'Content-Type':'application/json'}, body: JSON.stringify(data)
+    });
+    const result = await resp.json();
+    if (result.ok) { closeModal('investEditModal'); loadInvestments(); }
+    else alert('Ошибка: ' + JSON.stringify(result));
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+async function deleteInvestment() {
+  if (!confirm('Удалить инвестицию?')) return;
+  const id = document.getElementById('inv-edit-id').value;
+  try {
+    await fetch(`${API_BASE}/api/investments/${id}`, {method: 'DELETE'});
+    closeModal('investEditModal');
+    loadInvestments();
+  } catch(e) { alert('Ошибка: ' + e.message); }
+}
+
+// ═══════════════════════════════════════
+//  FAB CONTEXT — show different action per tab
+// ═══════════════════════════════════════
+function updateFab() {
+  const activeTab = document.querySelector('.nav-item.active');
+  const fab = document.getElementById('fabBtn');
+  if (!activeTab || !fab) return;
+  const tab = activeTab.dataset.tab;
+  fab.style.display = (tab === 'tab-more' || tab === 'tab-planning') ? 'none' : 'flex';
+  fab.onclick = tab === 'tab-invest' ? openInvestAdd : openAddModal;
+}
+
+// Patch nav click to also update FAB
+document.querySelectorAll('.nav-item').forEach(btn => {
+  btn.addEventListener('click', updateFab);
+});
+
+// ═══════════════════════════════════════
 //  INIT
 // ═══════════════════════════════════════
 loadDashboard(currentDays);
+loadAccounts();
+updateFab();
 </script>
 </body>
 </html>
